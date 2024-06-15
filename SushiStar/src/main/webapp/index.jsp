@@ -9,38 +9,8 @@
     <title>SushiStar</title>
 </head>
 <body>
-<header>
-    <nav class="header__nav">
-        <div class="header__logo">
-            <h4 data-aos="fade-down">SushiStar</h4>
-            <div class="header__logo-overlay"></div>
-        </div>
-
-        <ul class="header__menu" data-aos="fade-down">
-            <li>
-                <a href="#menu">Menu</a>
-            </li>
-            <li>
-                <a href="#food">Food</a>
-            </li>
-            <li>
-                <a href="#services">Services</a>
-            </li>
-            <li>
-                <a href="#about-us">About Us</a>
-            </li>
-            <li>
-                <img src="assets/img/search.svg" alt="search" />
-            </li>
-        </ul>
-
-        <ul class="header__menu-mobile" data-aos="fade-down">
-            <li>
-                <img src="assets/img/menu.svg" alt="menu" />
-            </li>
-        </ul>
-    </nav>
-</header>
+<!-- Header -->
+<%@ include file="header.jsp"%>
 
 <section class="hero">
     <div class="hero-image">
@@ -325,31 +295,9 @@
     </div>
 </section>
 
-<footer class="footer flex-between">
-    <h3 class="footer__logo">
-        <span>Sushi</span>man
-    </h3>
 
-    <ul class="footer__nav">
-        <li><a href="#menu">Menu</a></li>
-        <li><a href="#food">Food</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#about-us">About Us</a></li>
-    </ul>
-
-    <ul class="footer__social">
-        <li class="flex-center">
-            <img src="assets/img/facebook.svg" alt="facebook" />
-        </li>
-        <li class="flex-center">
-            <img src="assets/img/instagram.svg" alt="instagram" />
-        </li>
-        <li class="flex-center">
-            <img src="assets/img/twitter.svg" alt="twitter" />
-        </li>
-    </ul>
-</footer>
-
+<!-- Footer -->
+<%@ include file="footer.jsp"%>
 <script src="js/script.js" type="module"></script>
 </body>
 </html>

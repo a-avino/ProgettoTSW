@@ -1,55 +1,44 @@
-<!DOCTYPE html>
-<html lang="it">
+<%--
+  Created by IntelliJ IDEA.
+  User: Antonio
+  Date: 14/06/2024
+  Time: 10:49
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Footer E-commerce Sushi</title>
+    <link rel="icon" type="image/png" href="/sushi.png" />
     <link rel="stylesheet" href="css/styles.css">
-    <style>
-        /* Font Awesome CSS */
-        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
-    </style>
+    <title>SushiStar</title>
 </head>
 <body>
-<!-- Contenuto del sito -->
+<footer class="footer flex-between">
+    <h3 class="footer__logo">
+        <span>Sushi</span>man
+    </h3>
 
-<!-- Footer -->
-<footer>
-    <div class="footer-container">
-        <div class="footer-section">
-            <h3>Chi Siamo</h3>
-            <p>Il miglior sushi direttamente a casa tua. Freschezza e qualità garantite ogni giorno.</p>
-        </div>
-        <div class="footer-section">
-            <h3>Contatti</h3>
-            <ul>
-                <li><i class="fas fa-envelope"></i> Email: info@sushiecommerce.com</li>
-                <li><i class="fas fa-phone-alt"></i> Telefono: +39 123 456 789</li>
-                <li><i class="fas fa-map-marker-alt"></i> Indirizzo: Via Sushi 123, Milano, Italia</li>
-            </ul>
-        </div>
-        <div class="footer-section">
-            <h3>Seguici</h3>
-            <ul class="social-icons">
-                <li><a href="#"><i class="fab fa-facebook-f"></i> Facebook</a></li>
-                <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
-                <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
-            </ul>
-        </div>
-        <div class="footer-section">
-            <h3>Link Utili</h3>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Menu</a></li>
-                <li><a href="#">Ordina Online</a></li>
-                <li><a href="#">Contatti</a></li>
-            </ul>
-        </div>
-    </div>
-    <div class="footer-bottom">
-        <p>&copy; 2024 Sushi E-commerce. Tutti i diritti riservati.</p>
-    </div>
+    <ul class="footer__nav">
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#food">Food</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about-us">About Us</a></li>
+    </ul>
+
+    <ul class="footer__social">
+        <li class="flex-center">
+            <img src="assets/img/facebook.svg" alt="facebook" />
+        </li>
+        <li class="flex-center">
+            <img src="assets/img/instagram.svg" alt="instagram" />
+        </li>
+        <li class="flex-center">
+            <img src="assets/img/twitter.svg" alt="twitter" />
+        </li>
+    </ul>
 </footer>
-
 </body>
 </html>
