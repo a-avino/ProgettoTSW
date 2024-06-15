@@ -10,6 +10,9 @@ public class Tag {
         this.nome = nome;
     }
 
+    public Tag(){
+
+    }
     public int getId() {
         return id;
     }

@@ -44,4 +44,8 @@ public class Categoria {
         this.descrizione = descrizione;
         this.nome = nome;
     }
+
+    public Categoria() {
+
+    }
 }
