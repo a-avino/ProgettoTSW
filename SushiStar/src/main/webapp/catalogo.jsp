@@ -253,7 +253,7 @@
                 <p>Prezzo: €<%= prodotto.getPrezzo() %>
                 </p>
                 <button>Aggiungi al Carrello</button>
-                <button>Scopri di più</button>
+                <button onclick="window.location.href='Prodotto?id=<%= prodotto.getId() %>'">Scopri di più</button>
             </div>
         </div>
     </div>

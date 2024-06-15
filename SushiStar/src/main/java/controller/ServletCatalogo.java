@@ -17,9 +17,6 @@ import java.util.Collection;
 
 @WebServlet("/Catalogo")
 public class ServletCatalogo extends HttpServlet {
-    public ServletCatalogo() {
-        super();
-    }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ProdottoCatalogoDAO prodottoCatalogoDAO = new ProdottoCatalogoDAO();
