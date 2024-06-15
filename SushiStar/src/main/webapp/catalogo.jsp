@@ -37,7 +37,6 @@
         }
 
         .card {
-            background-color: white;
             width: 300px;
             height: 400px;
             perspective: 1000px;
@@ -74,7 +73,8 @@
 
         .card-front img {
             width: 100%;
-            height: auto;
+            height: 250px;
+            object-fit: cover;
         }
 
         .card-back {
@@ -136,15 +136,17 @@
     <div class="card">
         <div class="card-inner">
             <div class="card-front">
-                <img src="assets/img/<%= prodotto.getNomeFoto() %>" alt="<%= prodotto.getNome() %> Image">
+                <img src="assets/img/<%= prodotto.getNomeFoto() %>" alt="<%= prodotto.getNome() %> Image" onerror="this.src='assets/img/noimg.jpg';">
                 <div class="container">
                     <h4><b><%= prodotto.getNome() %></b></h4>
-                    <p><%= prodotto.getDescrizione() %></p>
+                    <p><b>Descrizione: </b> <%= prodotto.getDescrizione() %></p>
+                    <p><b>Categoria: </b><%= prodotto.getCategoriaID() %></p>
+                    <p><b>Tag:</b> </p>
                 </div>
             </div>
             <div class="card-back">
                 <h4><b><%= prodotto.getNome() %></b></h4>
-                <p><%= prodotto.getDescrizione() %></p>
+                <p>N.Pezzi = <%= prodotto.getPezziPorzione() %></p>
                 <p>Prezzo: €<%= prodotto.getPrezzo() %></p>
                 <button>Aggiungi al Carrello</button>
             </div>
