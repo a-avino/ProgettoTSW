@@ -202,8 +202,13 @@
                 <input type="text" id="quantity" value="1">
                 <button onclick="increaseQuantity()">+</button>
             </div>
-            <button class="purchase-button">ACQUISTA</button>
+            <form action="Carrello" method="post" style="display:inline;">
+                <input type="hidden" name="productId" value="${prodotto.getId()}">
+                <input type="hidden" name="action" value="add">
+                <button type="submit" class="purchase-button">ACQUISTA</button>
+            </form>
         </div>
+
     </div>
 </div>
 

@@ -12,7 +12,7 @@
     <style>
         /* catalogo.css */
         body {
-            font-family: Arial, sans-serif;
+
             margin: 0;
             padding: 0;
             background-color: #f8f8f8;
@@ -252,7 +252,11 @@
                 </p>
                 <p>Prezzo: €<%= prodotto.getPrezzo() %>
                 </p>
-                <button>Aggiungi al Carrello</button>
+                <form action="Carrello" method="post" style="display:inline;">
+                    <input type="hidden" name="productId" value="<%= prodotto.getId() %>">
+                    <input type="hidden" name="action" value="add">
+                    <button type="submit" class="purchase-button">Aggiungi al Carrello</button>
+                </form>
                 <button onclick="window.location.href='Prodotto?id=<%= prodotto.getId() %>'">Scopri di più</button>
             </div>
         </div>

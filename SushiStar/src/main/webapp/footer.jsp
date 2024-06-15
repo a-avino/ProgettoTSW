@@ -18,14 +18,13 @@
 <body>
 <footer class="footer flex-between">
     <h3 class="footer__logo">
-        <span>Sushi</span>man
+        <span>Sushi</span>Star
     </h3>
 
     <ul class="footer__nav">
-        <li><a href="#menu">Menu</a></li>
-        <li><a href="#food">Food</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#about-us">About Us</a></li>
+        <li>Email: sushistar@gmail.com</li>
+        <li>Indirizzo: Via Roma 34, Napoli</li>
+        <li>Tel: +39 12345678653</li>
     </ul>
 
     <ul class="footer__social">

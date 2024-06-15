@@ -144,10 +144,10 @@
         </article>
     </div>
 
-    <button class="popular-foods__button">
+    <a  href="${pageContext.request.contextPath}/Catalogo" class="popular-foods__button">
         Explore Food
         <img src="assets/img/arrow-right.svg"  alt="arrow-right" />
-    </button>
+    </a>
 </section>
 
 <section class="trending" id="food">
