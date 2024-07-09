@@ -166,69 +166,68 @@
 <body>
 <!-- Header -->
 <%@ include file="header.jsp" %>
-
 <div id="filter-container">
     <h1>Catalogo Sushi</h1>
-    <div>
-        <h3>Filtra prodotti per ...</h3>
+    <form id="filter-form">
+        <div>
+            <h3>Filtra prodotti per ...</h3>
 
-        <label> Categorie:
-            <select>
-                <option>Tutte le categorie</option>
-                <%
-                    Collection<Categoria> categorie = (Collection<Categoria>) request.getAttribute("categorie");
-                    if (categorie != null) {
-                        for (Categoria categoria : categorie) {
-                %>
-                <option>
-                    <%=categoria.getNome() %>
-                </option>
-                <%
+            <label> Categorie:
+                <select name="categoria">
+                    <option value="">Tutte le categorie</option>
+                    <%
+                        Collection<Categoria> categorie = (Collection<Categoria>) request.getAttribute("categorie");
+                        if (categorie != null) {
+                            for (Categoria categoria : categorie) {
+                    %>
+                    <option value="<%= categoria.getId() %>"><%= categoria.getNome() %></option>
+                    <%
+                            }
                         }
-                    }
-                %>
-            </select>
-        </label>
+                    %>
+                </select>
+            </label>
 
-        <label> Tag:
-            <select>
-                <option>Tutti i tag</option>
-                <%
-                    Collection<Tag> tags = (Collection<Tag>) request.getAttribute("tags");
-                    if (tags != null) {
-                        for (Tag tag : tags) {
-                %>
-                <option>
-                    <%=tag.getNome() %>
-                </option>
-                <%
+            <label> Tag:
+                <select name="tag">
+                    <option value="">Tutti i tag</option>
+                    <%
+                        Collection<Tag> tags = (Collection<Tag>) request.getAttribute("tags");
+                        if (tags != null) {
+                            for (Tag tag : tags) {
+                    %>
+                    <option value="<%= tag.getId() %>"><%= tag.getNome() %></option>
+                    <%
+                            }
                         }
-                    }
-                %>
-            </select>
-        </label>
-        <label> Prezzo:
-            <select>
-                <option>
-                    Prezzo Crescente
-                </option>
-                <option>
-                    Prezzo Decrescente
-                </option>
-            </select>
-        </label>
+                    %>
+                </select>
+            </label>
+            <label> Prezzo:
+                <select name="prezzo">
+                    <option value="asc">Prezzo Crescente</option>
+                    <option value="desc">Prezzo Decrescente</option>
+                </select>
+            </label>
 
-        <input type="text" id="search-bar" placeholder="Cerca prodotto...">
-        <hr>
-    </div>
-
+            <input type="text" id="search-bar" name="search" placeholder="Cerca prodotto...">
+        </div>
+    </form>
 </div>
 <main id="product-container">
+
     <%
         Collection<ProdottoCatalogo> prodotti = (Collection<ProdottoCatalogo>) request.getAttribute("prodotti");
         if (prodotti != null) {
-
             for (ProdottoCatalogo prodotto : prodotti) {
+                // Creare una stringa per contenere i tag concatenati
+                StringBuilder tagsString = new StringBuilder();
+                for (Tag tag : prodotto.getTags()) {
+                    if (tagsString.length() > 0) {
+                        tagsString.append(", ");
+                    }
+                    tagsString.append(tag.getNome());
+                }
     %>
     <div class="card">
         <div class="card-inner">
@@ -240,9 +239,9 @@
                     </b></h4>
                     <p><b>Descrizione: </b> <%= prodotto.getDescrizione() %>
                     </p>
-                    <p><b>Categoria: </b><%= prodotto.getCategoriaID() %>
+                    <p><b>Categoria: </b><%= prodotto.getCategoriaNome() %>
                     </p>
-                    <p><b>Tag:</b></p>
+                    <p><b>Tag: </b><%= tagsString.toString() %></p>
                 </div>
             </div>
             <div class="card-back">

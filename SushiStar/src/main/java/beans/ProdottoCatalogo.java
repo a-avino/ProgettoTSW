@@ -1,5 +1,7 @@
 package beans;
 
+import java.util.List;
+
 public class ProdottoCatalogo {
 
     //Variabili d'istanza
@@ -9,6 +11,20 @@ public class ProdottoCatalogo {
     private String nomeFoto;
     private int pezziPorzione;
     private float prezzo;
+
+    private int categoriaID;
+
+    private String categoriaNome;
+
+    public String getCategoriaNome() {
+        return categoriaNome;
+    }
+
+    public void setCategoriaNome(String categoriaNome) {
+        this.categoriaNome = categoriaNome;
+    }
+
+    private List <Tag> tags;
 
     public int getId() {
         return id;
@@ -66,7 +82,6 @@ public class ProdottoCatalogo {
         this.categoriaID = categoriaID;
     }
 
-    private int categoriaID;
 
     public ProdottoCatalogo(int id, String nome, String descrizione, String nomeFoto, int pezziPorzione, float prezzo, int categoriaID) {
         this.id = id;
@@ -80,6 +95,14 @@ public class ProdottoCatalogo {
 
     public  ProdottoCatalogo (){
 
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override

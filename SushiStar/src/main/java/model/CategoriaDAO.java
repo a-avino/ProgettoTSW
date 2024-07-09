@@ -24,7 +24,7 @@ public class CategoriaDAO {
                 Categoria categoria = new Categoria();
                 categoria.setDescrizione(rs.getString("Descrizione"));
                 categoria.setId(rs.getInt("ID"));
-                categoria.setNome("Nome");
+                categoria.setNome(rs.getString("Nome"));
                 return  categoria;
             }
             return null;

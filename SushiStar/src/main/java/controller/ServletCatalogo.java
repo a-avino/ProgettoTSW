@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.CategoriaDAO;
 import model.ProdottoCatalogoDAO;
 import model.TagDAO;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.Collection;
