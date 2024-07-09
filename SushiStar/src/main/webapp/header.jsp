@@ -1,4 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="beans.Utente" %>
+<%
+    Utente currentUser = (Utente) session.getAttribute("utente");
+    Utente currentAdmin = (Utente) session.getAttribute("admin");
+%>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -8,7 +13,6 @@
     <link rel="stylesheet" href="css/styles.css">
     <title>SushiStar</title>
     <style>
-
         .header__nav {
             background-color: var(--primary-color);
             display: flex;
@@ -28,8 +32,8 @@
         }
 
         .header__logo img {
-            width: 50px; /* Adjust size as needed */
-            height: 30px; /* Adjust size as needed */
+            width: 50px;
+            height: 30px;
             z-index: 100;
         }
 
@@ -62,7 +66,6 @@
             width: 24px;
             height: 24px;
         }
-
     </style>
 </head>
 <body>
@@ -93,9 +96,15 @@
         </ul>
 
         <ul class="header__menu-icons" data-aos="fade-down">
+            <% if (currentUser != null || currentAdmin != null) { %>
             <li>
-                <a href="#login"><img src="assets/img/usericon.png" alt="login" /></a>
+                <a href="#" onclick="logoutConfirmation()"><img src="assets/img/usericon.png" alt="logout" /></a>
             </li>
+            <% } else { %>
+            <li>
+                <a href="${pageContext.request.contextPath}/login.jsp"><img src="assets/img/usericon.png" alt="login" /></a>
+            </li>
+            <% } %>
             <li>
                 <a href="${pageContext.request.contextPath}/Carrello"><img src="assets/img/shopping-cart.png" alt="cart" /></a>
             </li>
@@ -108,6 +117,14 @@
         </ul>
     </nav>
 </header>
+
+<script>
+    function logoutConfirmation() {
+        if (confirm("Sei sicuro di voler effettuare il logout?")) {
+            window.location.href = "${pageContext.request.contextPath}/LogoutServlet";
+        }
+    }
+</script>
 
 </body>
 </html>
