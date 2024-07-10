@@ -184,7 +184,7 @@
 <%@ include file="header.jsp" %>
 
 <div class="breadcrumb">
-    <a href="#">Home</a> &gt; <a href="#">Catologo</a> &gt; <span>Prodotto</span>
+    <a href="index.jsp">Home</a> &gt; <a href="${pageContext.request.contextPath}/Catalogo">Catologo</a> &gt; <span>Prodotto</span>
 </div>
 
 <div class="container">
@@ -194,6 +194,8 @@
     <div class="product-info">
         <div class="product-name">${prodotto.nome}</div>
         <div class="product-description">${prodotto.descrizione}</div>
+        <div class="product-description">${prodotto.categoriaNome}</div>
+        <div class="product-description">${prodotto.tags}</div>
         <div class="product-price">€ ${prodotto.prezzo}</div>
 
         <div class="product-controls">

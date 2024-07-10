@@ -48,4 +48,23 @@ public class OrdineDAO {
         }
         return ordini;
     }
+
+
+    public int saveOrdine(Ordine ordine) {
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement("INSERT INTO Ordine (DataOrdine, TipoOrdine) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setDate(1, new java.sql.Date(ordine.getDataOrdine().getTime())); // Conversione da java.util.Date a java.sql.Date
+            ps.setString(2, ordine.getTipoOrdine());
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1); // Restituisce l'ID generato per l'ordine
+            } else {
+                throw new SQLException("Errore nel recupero dell'ID generato per l'ordine.");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

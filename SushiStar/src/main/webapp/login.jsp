@@ -75,7 +75,7 @@
 <body>
 
 <div class="login-container">
-    <img src="assets/img/logo.png" alt="SushiStar Logo">
+    <img src="assets/img/sushi.png" alt="SushiStar Logo">
     <h2>Login</h2>
     <p>Benvenuto! Per favore, accedi al tuo account.</p>
     <form action="LoginServlet" method="post">

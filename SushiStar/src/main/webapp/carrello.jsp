@@ -1,248 +1,163 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="model.Carrello" %>
 <%@ page import="beans.ProdottoCarrello" %>
 <html>
 <head>
-    <title>Carrello </title>
+    <title>Carrello</title>
     <style>
-        @import url(https://fonts.googleapis.com/css?family=Fredoka+One);
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-        html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-            margin: 0;
-            padding: 0;
-            border: 0;
-            font-size: 100%;
-            font: inherit;
-            vertical-align: baseline;
-            outline: none;
-            -webkit-font-smoothing: antialiased;
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-        }
-        html { overflow-y: scroll; }
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            font-size: 62.5%;
-            line-height: 1;
-            color: #414141;
-            background: #caccf7 url('https://i.imgur.com/Syv2IVk.png'); /* https://subtlepatterns.com/old-map/ */
-            padding: 25px 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f8f8;
         }
-
-        ::selection { background: #bdc0e8; }
-        ::-moz-selection { background: #bdc0e8; }
-
-
-        br { display: block; line-height: 1.6em; }
-
-        article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
-        ol, ul { list-style: none; }
-
-        input, textarea {
-            -webkit-font-smoothing: antialiased;
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-            -webkit-box-sizing: border-box;
-            -moz-box-sizing: border-box;
-            box-sizing: border-box;
-            outline: none;
-        }
-
-        blockquote, q { quotes: none; }
-        blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
-        strong, b { font-weight: bold; }
-        em, i { font-style: italic; }
-
-        table { border-collapse: collapse; border-spacing: 0; }
-        img { border: 0; max-width: 100%; }
 
         h1 {
-            font-family: 'Fredoka One', Helvetica, Tahoma, sans-serif;
-            color: #fff;
-            text-shadow: 1px 2px 0 #7184d8;
-            font-size: 3.5em;
-            line-height: 1.1em;
-            padding: 6px 0;
-            font-weight: normal;
+            font-size: 2.5em;
+            color: #333;
             text-align: center;
+            margin: 20px 0;
         }
 
-
-        /* page structure */
         #w {
-            display: block;
-            width: 600px;
-            margin: 0 auto;
+            width: 90%;
+            max-width: 1000px;
+            margin: 20px auto;
         }
 
         #title {
-            display: block;
-            width: 100%;
-            background: #95a6d6;
-            padding: 10px 0;
-            -webkit-border-top-right-radius: 6px;
-            -webkit-border-top-left-radius: 6px;
-            -moz-border-radius-topright: 6px;
-            -moz-border-radius-topleft: 6px;
-            border-top-right-radius: 6px;
-            border-top-left-radius: 6px;
+            background-color: #ff4500;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
         }
 
         #page {
-            display: block;
-            background: #fff;
-            padding: 15px 0;
-            -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-            -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: -10px;
         }
 
-        /** cart table **/
-        #cart {
-            display: block;
-            border-collapse: collapse;
-            margin: 0;
+        table {
             width: 100%;
-            font-size: 1.2em;
-            color: #444;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
-        #cart thead th {
-            padding: 8px 0;
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
             font-weight: bold;
+            font-size: 1.1em;
         }
 
-        #cart thead th.first {
-            width: 175px;
-        }
-        #cart thead th.second {
-            width: 45px;
-        }
-        #cart thead th.third {
-            width: 230px;
-        }
-        #cart thead th.fourth {
-            width: 130px;
-        }
-        #cart thead th.fifth {
-            width: 20px;
+        .productitm img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
         }
 
-        #cart tbody td {
-            text-align: center;
-            margin-top: 4px;
+        .productitm {
+            border-bottom: 1px solid #ddd;
         }
 
-        tr.productitm {
-            height: 65px;
-            line-height: 65px;
-            border-bottom: 1px solid #d7dbe0;
+        .extracosts {
+            background-color: #f9f9f9;
         }
-
-
-        #cart tbody td img.thumb {
-            vertical-align: bottom;
-            border: 1px solid #ddd;
-            margin-bottom: 4px;
-        }
-
-        .qtyinput {
-            width: 33px;
-            height: 22px;
-            border: 1px solid #a3b8d3;
-            background: #dae4eb;
-            color: #616161;
-            text-align: center;
-        }
-
-        tr.totalprice, tr.extracosts {
-            height: 35px;
-            line-height: 35px;
-        }
-        tr.extracosts {
-            background: #e4edf4;
-        }
-
-        .remove {
-            /* http://findicons.com/icon/261449/trash_can?id=397422 */
-            cursor: pointer;
-            position: relative;
-            right: 12px;
-            top: 5px;
-        }
-
 
         .light {
-            color: #888b8d;
-            text-shadow: 1px 1px 0 rgba(255,255,255,0.45);
-            font-size: 1.1em;
-            font-weight: normal;
+            font-weight: 400;
+            color: #666;
         }
+
         .thick {
-            color: #272727;
-            font-size: 1.7em;
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 1.5em;
         }
 
-
-        /** submit btn **/
-        tr.checkoutrow {
-            background: #cfdae8;
-            border-top: 1px solid #abc0db;
-            border-bottom: 1px solid #abc0db;
+        .checkoutrow {
+            background-color: #ff4500;
+            color: #fff;
         }
-        td.checkout {
-            padding: 12px 0;
-            padding-top: 20px;
-            width: 100%;
+
+        .checkout {
             text-align: right;
         }
 
-
-        /* https://codepen.io/guvootes/pen/eyDAb */
         #submitbtn {
-            width: 150px;
-            height: 35px;
-            outline: none;
-            border: none;
-            border-radius: 5px;
-            margin: 0 0 10px 0;
-            font-size: 1.3em;
-            letter-spacing: 0.05em;
-            font-family: Arial, Tahoma, sans-serif;
+            background-color: #ff4500;
             color: #fff;
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
             cursor: pointer;
-            overflow: hidden;
-            border-bottom: 1px solid #0071ff;
-            background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #66aaff), color-stop(100%, #4d9cff));
-            background-image: -webkit-linear-gradient(#66aaff, #4d9cff);
-            background-image: -moz-linear-gradient(#66aaff, #4d9cff);
-            background-image: -o-linear-gradient(#66aaff, #4d9cff);
-            background-image: linear-gradient(#66aaff, #4d9cff);
+            border-radius: 5px;
+            transition: background-color 0.2s;
         }
+
         #submitbtn:hover {
-            background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #4d9cff), color-stop(100%, #338eff));
-            background-image: -webkit-linear-gradient(#4d9cff, #338eff);
-            background-image: -moz-linear-gradient(#4d9cff, #338eff);
-            background-image: -o-linear-gradient(#4d9cff, #338eff);
-            background-image: linear-gradient(#4d9cff, #338eff);
+            background-color: #ff6347;
         }
-        #submitbtn:active {
-            border-bottom: 0;
-            background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #338eff), color-stop(100%, #4d9cff));
-            background-image: -webkit-linear-gradient(#338eff, #4d9cff);
-            background-image: -moz-linear-gradient(#338eff, #4d9cff);
-            background-image: -o-linear-gradient(#338eff, #4d9cff);
-            background-image: linear-gradient(#338eff, #4d9cff);
-            -webkit-box-shadow: inset 0 1px 3px 1px rgba(0,0,0,0.25);
-            -moz-box-shadow: inset 0 1px 3px 1px rgba(0,0,0,0.25);
-            box-shadow: inset 0 1px 3px 1px rgba(0,0,0,0.25);
+
+        .remove {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px; /* Aggiungi padding per rendere il bottone più grande */
         }
+
+        .remove img {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Styles for the order type section */
+        .order-type-container {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f2f2f2;
+            border-radius: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .order-type-container label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .order-type-option {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .order-type-container input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .order-type-container input[type="text"],
+        .order-type-container input[type="time"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
     </style>
 </head>
 <body>
+<!-- Header -->
+<%@ include file="header.jsp" %>
 <div id="w">
     <header id="title">
         <h1>Carrello</h1>
@@ -253,11 +168,11 @@
         <table id="cart">
             <thead>
             <tr>
-                <th class="first">Photo</th>
-                <th class="second">Qty</th>
-                <th class="third">Product</th>
-                <th class="fourth">Line Total</th>
-                <th class="fifth">&nbsp;</th>
+                <th>Foto</th>
+                <th>Quantità</th>
+                <th>Prodotto</th>
+                <th>Totale</th>
+                <th>&nbsp;</th>
             </tr>
             </thead>
             <tbody>
@@ -275,14 +190,14 @@
             <tr class="productitm">
                 <td><img src="assets/img/<%= prod.getProdotto().getNomeFoto() %>" class="thumb" alt="<%= prod.getProdotto().getNome() %>"></td>
                 <td>
-                    <p> <%= prod.getQuantità() %></p>
+                    <p><%= prod.getQuantità() %></p>
                 </td>
                 <td><%= prod.getProdotto().getNome() %></td>
                 <td>€ <%= prod.getPrezzoTotale() %></td>
                 <td>
                     <form action="Carrello" method="post">
                         <input type="hidden" name="productId" value="<%= prod.getProdotto().getId() %>">
-                        <button type="submit" name="action" value="remove" class="remove"><img src="https://i.imgur.com/h1ldGRr.png" alt="Rimuovi"></button>
+                        <button type="submit" name="action" value="remove" class="remove"><img src="assets/img/trash-can.png" alt="Rimuovi"></button>
                     </form>
                 </td>
             </tr>
@@ -290,25 +205,59 @@
                 }
             %>
             <tr class="extracosts">
-                <td class="light">Shipping &amp; Tax</td>
+                <td class="light">Spedizione &amp; Tasse</td>
                 <td colspan="2" class="light"></td>
                 <td>€ 35.00</td>
                 <td>&nbsp;</td>
             </tr>
             <tr class="totalprice">
-                <td class="light">Total:</td>
+                <td class="light">Totale:</td>
                 <td colspan="2">&nbsp;</td>
                 <td colspan="2"><span class="thick">€ <%= carrello.getPrezzoTotaleProdotti() + 35 %></span></td>
-            </tr>
-            <tr class="checkoutrow">
-                <td colspan="5" class="checkout"><button id="submitbtn">Checkout Now!</button></td>
             </tr>
             <%
                 }
             %>
             </tbody>
         </table>
+
+        <!-- Order type selection -->
+        <div class="order-type-container">
+            <form action="OrdineServlet" method="post">
+                <div class="order-type-option">
+                    <label>Tipo di ordine:</label>
+                    <input type="radio" id="delivery" name="tipoOrdine" value="Delivery" onclick="toggleOrderFields('delivery')" required>
+                    <label for="delivery">Delivery</label>
+                    <input type="radio" id="takeaway" name="tipoOrdine" value="Takeaway" onclick="toggleOrderFields('takeaway')" required>
+                    <label for="takeaway">Takeaway</label>
+                </div>
+
+                <div id="deliveryFields" class="order-type-option" style="display:none;">
+                    <label for="indirizzoConsegna">Indirizzo di consegna:</label>
+                    <input type="text" id="indirizzoConsegna" name="indirizzoConsegna">
+                </div>
+
+                <div id="takeawayFields" class="order-type-option" style="display:none;">
+                    <label for="orarioRitiro">Orario di ritiro:</label>
+                    <input type="time" id="orarioRitiro" name="orarioRitiro">
+                </div>
+
+                <div class="checkout" style="flex-basis: 100%; text-align: right;">
+                    <button type="submit" id="submitbtn">Procedi al Checkout</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+<!-- Footer -->
+<%@ include file="footer.jsp" %>
+
+<script>
+    function toggleOrderFields(type) {
+        document.getElementById('deliveryFields').style.display = type === 'delivery' ? 'block' : 'none';
+        document.getElementById('takeawayFields').style.display = type === 'takeaway' ? 'block' : 'none';
+    }
+</script>
 </body>
 </html>

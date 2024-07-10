@@ -21,9 +21,15 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             width: 300px;
+            text-align: center; /* Center align text and image */
+        }
+        .registration-container img {
+            width: 80px; /* Smaller image size */
+            height: auto;
+            margin: 0 auto 20px auto; /* Center image and add bottom margin */
+            display: block;
         }
         .registration-container h2 {
-            text-align: center;
             margin-bottom: 20px;
         }
         .registration-container form {
@@ -104,6 +110,7 @@
 </head>
 <body>
 <div class="registration-container">
+    <img src="assets/img/sushi.png" alt="SushiStar Logo">
     <h2>Registrazione</h2>
     <form action="RegistrazioneServlet" method="post" onsubmit="return validateForm()">
         <input type="text" id="nome" name="nome" placeholder="Nome" required>
