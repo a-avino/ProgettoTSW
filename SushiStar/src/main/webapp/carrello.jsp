@@ -9,6 +9,8 @@
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
         }
 
         h1 {
@@ -25,7 +27,6 @@
         }
 
         #title {
-            background-color: #ff4500;
             color: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -110,7 +111,7 @@
             background: none;
             border: none;
             cursor: pointer;
-            padding: 10px; /* Aggiungi padding per rendere il bottone più grande */
+            padding: 10px;
         }
 
         .remove img {
@@ -153,6 +154,40 @@
             border-radius: 4px;
         }
 
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+                width: 100%;
+            }
+
+            thead tr {
+                display: none;
+            }
+
+            tr {
+                margin-bottom: 15px;
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px;
+                border: 1px solid #ddd;
+            }
+
+            td:before {
+                content: attr(data-label);
+                flex-basis: 50%;
+                text-align: left;
+                font-weight: bold;
+            }
+
+            .checkout {
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -188,13 +223,13 @@
                 for (ProdottoCarrello prod : carrello.getProdotti()) {
             %>
             <tr class="productitm">
-                <td><img src="assets/img/<%= prod.getProdotto().getNomeFoto() %>" class="thumb" alt="<%= prod.getProdotto().getNome() %>"></td>
-                <td>
+                <td data-label="Foto"><img src="assets/img/<%= prod.getProdotto().getNomeFoto() %>" class="thumb" alt="<%= prod.getProdotto().getNome() %>"></td>
+                <td data-label="Quantità">
                     <p><%= prod.getQuantità() %></p>
                 </td>
-                <td><%= prod.getProdotto().getNome() %></td>
-                <td>€ <%= prod.getPrezzoTotale() %></td>
-                <td>
+                <td data-label="Prodotto"><%= prod.getProdotto().getNome() %></td>
+                <td data-label="Totale">€ <%= prod.getPrezzoTotale() %></td>
+                <td data-label="Rimuovi">
                     <form action="Carrello" method="post">
                         <input type="hidden" name="productId" value="<%= prod.getProdotto().getId() %>">
                         <button type="submit" name="action" value="remove" class="remove"><img src="assets/img/trash-can.png" alt="Rimuovi"></button>
@@ -205,13 +240,13 @@
                 }
             %>
             <tr class="extracosts">
-                <td class="light">Spedizione &amp; Tasse</td>
+                <td class="light" data-label="Spedizione & Tasse">Spedizione &amp; Tasse</td>
                 <td colspan="2" class="light"></td>
-                <td>€ 35.00</td>
+                <td data-label="Costo">€ 35.00</td>
                 <td>&nbsp;</td>
             </tr>
             <tr class="totalprice">
-                <td class="light">Totale:</td>
+                <td class="light" data-label="Totale">Totale:</td>
                 <td colspan="2">&nbsp;</td>
                 <td colspan="2"><span class="thick">€ <%= carrello.getPrezzoTotaleProdotti() + 35 %></span></td>
             </tr>

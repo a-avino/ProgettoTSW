@@ -14,7 +14,12 @@ public class LogoutServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false); // Ottieni la sessione esistente senza crearne una nuova
         if (session != null) {
-            session.invalidate(); // Invalida la sessione
+            // Rimuovi attributi specifici
+            session.removeAttribute("utente");
+            session.removeAttribute("admin");
+
+            // Invalida la sessione
+            session.invalidate();
         }
         response.sendRedirect("index.jsp"); // Reindirizza alla pagina di login
     }

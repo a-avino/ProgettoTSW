@@ -156,6 +156,24 @@
             margin: 20px auto;
             max-width: 900px;
         }
+
+        @media (max-width: 768px) {
+            #filter-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #filter-container > div {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            #filter-container select,
+            #filter-container input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
     </style>
     <script>
         function fetchFilteredProducts() {

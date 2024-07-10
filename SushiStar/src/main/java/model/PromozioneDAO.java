@@ -46,7 +46,7 @@ public class PromozioneDAO {
                 promozione.setNome(rs.getString("Nome"));
                 promozione.setDescrizione(rs.getString("Descrizione"));
                 promozione.setPercentualeSconto(rs.getFloat("PercentualeSconto"));
-
+                promozione.setPeriodoValidita(rs.getDate("PeriodoValidita"));
                 promozioni.add(promozione);
             }
         } catch (SQLException e) {
@@ -62,6 +62,17 @@ public class PromozioneDAO {
             ps.setFloat(3, promozione.getPercentualeSconto());
             ps.setDate(4, new java.sql.Date(promozione.getPeriodoValidita().getTime()));
 
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean deletePromotion(int promotionId) {
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement("DELETE FROM Promozione WHERE ID = ?");
+            ps.setInt(1, promotionId);
             int rowsAffected = ps.executeUpdate();
             return rowsAffected > 0;
         } catch (SQLException e) {

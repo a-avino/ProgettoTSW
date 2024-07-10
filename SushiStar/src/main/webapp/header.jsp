@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="beans.Utente" %>
 <%
+    // Recupera l'utente dalla sessione
     Utente currentUser = (Utente) session.getAttribute("utente");
     Utente currentAdmin = (Utente) session.getAttribute("admin");
 %>
@@ -96,35 +97,27 @@
         </ul>
 
         <ul class="header__menu-icons" data-aos="fade-down">
-            <% if (currentUser != null || currentAdmin != null) { %>
             <li>
-                <a href="#" onclick="logoutConfirmation()"><img src="assets/img/usericon.png" alt="logout" /></a>
+                <% if (currentUser == null && currentAdmin == null) { %>
+                <a href="${pageContext.request.contextPath}/login.jsp"><img src="assets/img/usericon.png" alt="Login" /></a>
+                <% } else if ( currentAdmin != null && ("admin".equalsIgnoreCase(currentAdmin.getRuolo()))) { %>
+                <a href="${pageContext.request.contextPath}/admin.jsp"><img src="assets/img/usericon.png" alt="Admin Page" /></a>
+                <% } else  if (currentUser  != null && "cliente".equalsIgnoreCase(currentUser.getRuolo())){ %>
+                <a href="${pageContext.request.contextPath}/utente.jsp"><img src="assets/img/usericon.png" alt="User Page" /></a>
+                <% } %>
             </li>
-            <% } else { %>
             <li>
-                <a href="${pageContext.request.contextPath}/login.jsp"><img src="assets/img/usericon.png" alt="login" /></a>
-            </li>
-            <% } %>
-            <li>
-                <a href="${pageContext.request.contextPath}/Carrello"><img src="assets/img/shopping-cart.png" alt="cart" /></a>
+                <a href="${pageContext.request.contextPath}/Carrello"><img src="assets/img/shopping-cart.png" alt="Cart" /></a>
             </li>
         </ul>
 
         <ul class="header__menu-mobile" data-aos="fade-down">
             <li>
-                <img src="assets/img/menu.svg" alt="menu" />
+                <img src="assets/img/menu.svg" alt="Menu" />
             </li>
         </ul>
     </nav>
 </header>
-
-<script>
-    function logoutConfirmation() {
-        if (confirm("Sei sicuro di voler effettuare il logout?")) {
-            window.location.href = "${pageContext.request.contextPath}/LogoutServlet";
-        }
-    }
-</script>
 
 </body>
 </html>

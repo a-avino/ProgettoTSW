@@ -13,6 +13,22 @@ import java.io.IOException;
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Controlla se l'utente è già loggato
+        HttpSession session = request.getSession(false); // false significa che non crea una nuova sessione se non esiste
+        if (session != null && session.getAttribute("utente") != null) {
+            Utente utente = (Utente) session.getAttribute("utente");
+            if ("admin".equalsIgnoreCase(utente.getRuolo())) {
+                response.sendRedirect("admin.jsp");
+            } else {
+                response.sendRedirect("utente.jsp");
+            }
+        } else {
+            // Se non è loggato, mostra la pagina di login
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+        }
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
@@ -22,13 +38,13 @@ public class LoginServlet extends HttpServlet {
 
         if (utente != null) {
             HttpSession session = request.getSession();
-            session.setAttribute("utente", utente);
 
             // Reindirizza in base al ruolo dell'utente
             if ("admin".equalsIgnoreCase(utente.getRuolo())) {
                 session.setAttribute("admin", utente);
                 response.sendRedirect("admin.jsp"); // Reindirizza alla pagina admin
             } else {
+                session.setAttribute("utente", utente);
                 response.sendRedirect("utente.jsp"); // Reindirizza alla pagina utente
             }
         } else {

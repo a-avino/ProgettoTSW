@@ -8,7 +8,7 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f8f8f8;
+            background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
             display: flex;
             justify-content: center;
             align-items: center;

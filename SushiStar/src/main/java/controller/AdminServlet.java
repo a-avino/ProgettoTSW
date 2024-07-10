@@ -62,4 +62,34 @@ public class AdminServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json);
     }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Utente admin = (Utente) session.getAttribute("admin");
+        if (admin == null || !admin.getRuolo().equals("admin")) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
+        String action = request.getParameter("action");
+        if (action == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Action parameter is missing");
+            return;
+        }
+
+        PromozioneDAO promozioneDAO = new PromozioneDAO();
+
+        switch (action) {
+            case "deletePromotion":
+                int promoId = Integer.parseInt(request.getParameter("id"));
+                boolean deleted = promozioneDAO.deletePromotion(promoId);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(new Gson().toJson(Map.of("success", deleted)));
+                break;
+            default:
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown action");
+                break;
+        }
+    }
 }

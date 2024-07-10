@@ -48,11 +48,11 @@
         }
         .main-container {
             display: flex;
+            flex-direction: column;
             padding: 20px;
             flex: 1;
         }
         .sidebar {
-            width: 20%;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -60,6 +60,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            margin-bottom: 20px;
         }
         .sidebar button {
             width: 100%;
@@ -78,11 +79,9 @@
             background-color: #f0f0f0;
         }
         .content {
-            width: 80%;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-left: 20px;
             flex-grow: 1;
         }
         .footer {
@@ -99,6 +98,19 @@
         .footer .social img {
             height: 30px;
         }
+        @media (min-width: 768px) {
+            .main-container {
+                flex-direction: row;
+            }
+            .sidebar {
+                width: 20%;
+                margin-bottom: 0;
+            }
+            .content {
+                width: 80%;
+                margin-left: 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -110,6 +122,7 @@
         <button onclick="showFidelityCard()">Fidelity Card</button>
         <button onclick="showOrders()">I Miei Ordini</button>
         <button onclick="showPromotions()">Le Mie Promozioni</button>
+        <button onclick="logoutConfirmation()">Logout</button>
     </div>
     <div class="content" id="main-content">
         <h2>Benvenuto, <%= utente.getNome() %>!</h2>
@@ -191,6 +204,13 @@
                 `;
             }
         });
+    }
+
+
+    function logoutConfirmation() {
+        if (confirm("Sei sicuro di voler effettuare il logout?")) {
+            window.location.href = "${pageContext.request.contextPath}/LogoutServlet";
+        }
     }
 </script>
 
