@@ -54,7 +54,7 @@ public class PromozioneDAO {
         }
         return promozioni;
     }
-    public boolean addPromozione(Promozione promozione) {
+    public boolean doSave(Promozione promozione) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement("INSERT INTO Promozione (Nome, Descrizione, PercentualeSconto, PeriodoValidita) VALUES (?, ?, ?, ?)");
             ps.setString(1, promozione.getNome());

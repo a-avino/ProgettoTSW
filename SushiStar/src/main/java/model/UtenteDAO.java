@@ -10,6 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UtenteDAO {
+
+    public boolean emailExists(String email) {
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT ID FROM Utente WHERE Email = ?");
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public Utente doLogin(String email, String password) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -75,5 +86,21 @@ public class UtenteDAO {
             throw new RuntimeException(e);
         }
         return utenti;
+    }
+
+    public boolean doSave(Utente utente) {
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(
+                    "INSERT INTO Utente (Nome, Cognome, Email, Password, Ruolo) VALUES (?, ?, ?, ?, ?)");
+            ps.setString(1, utente.getNome());
+            ps.setString(2, utente.getCognome());
+            ps.setString(3, utente.getEmail());
+            ps.setString(4, utente.getPassword()); // Ricorda di hashare la password prima di salvarla
+            ps.setString(5, "user"); // Imposta il ruolo di default a "user"
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

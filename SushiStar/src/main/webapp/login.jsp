@@ -82,6 +82,7 @@
         <input type="text" name="email" placeholder="Email" required>
         <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
+        <p>Non sei ancora registrato? <a href="registrazione.jsp">Registrati qui!</a></p>
         <p class="error">
             <%
                 String errorMessage = (String) request.getAttribute("errorMessage");

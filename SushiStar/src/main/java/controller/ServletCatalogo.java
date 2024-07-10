@@ -34,9 +34,24 @@ public class ServletCatalogo extends HttpServlet {
         request.setAttribute("categorie", categorie);
 
         Collection<Tag> tags = tagDAO.doRetriveAll("Nome");
-        request.setAttribute("tags",tags);
+        request.setAttribute("tags", tags);
 
         // Forwarda la richiesta alla JSP per la visualizzazione
         request.getRequestDispatcher("catalogo.jsp").forward(request, response);
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String categoria = request.getParameter("categoria");
+        String tag = request.getParameter("tag");
+        String prezzo = request.getParameter("prezzo");
+        String search = request.getParameter("search");
+
+        ProdottoCatalogoDAO prodottoCatalogoDAO = new ProdottoCatalogoDAO();
+        Collection<ProdottoCatalogo> prodotti = prodottoCatalogoDAO.doRetrieveByFilters(categoria, tag, prezzo, search);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        String json = new Gson().toJson(prodotti);
+        response.getWriter().write(json);
     }
 }

@@ -10,9 +10,7 @@
     <title>SushiStar-Catalogo</title>
     <link rel="stylesheet" href="css/sections/catalogo.css"/>
     <style>
-        /* catalogo.css */
         body {
-
             margin: 0;
             padding: 0;
             background-color: #f8f8f8;
@@ -30,7 +28,7 @@
             width: 80%;
             max-width: 200px;
             font-size: 16px;
-            flex: 1; /* Occupa tutto lo spazio rimanente */
+            flex: 1;
         }
 
         #product-container {
@@ -121,8 +119,6 @@
             background-color: #ff6347;
         }
 
-        /* Stili per i select */
-        /* Stili per i select */
         select {
             appearance: none;
             -webkit-appearance: none;
@@ -132,12 +128,12 @@
             padding: 8px 12px;
             font-size: 16px;
             border-radius: 5px;
-            box-sizing: border-box; /* assicura che il padding non aumenti la larghezza */
-            margin-right: 10px; /* Margine a destra per separare i select */
+            box-sizing: border-box;
+            margin-right: 10px;
         }
 
         select:last-child {
-            margin-right: 0; /* Rimuove il margine a destra dall'ultimo select per evitare spazi vuoti */
+            margin-right: 0;
         }
 
         select option {
@@ -154,14 +150,69 @@
 
         #filter-container {
             display: flex;
-            justify-content: space-around; /* Distribuisce uniformemente gli elementi lungo la linea principale */
-            align-items: center; /* Centra verticalmente gli elementi */
-            flex-wrap: wrap; /* Permette il wrap degli elementi su più righe se necessario */
-            margin: 20px auto; /* Margini esterni per centrare e spaziare i filtri */
-            max-width: 900px; /* Larghezza massima del contenitore */
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 20px auto;
+            max-width: 900px;
+        }
+    </style>
+    <script>
+        function fetchFilteredProducts() {
+            const formData = new FormData(document.getElementById('filter-form'));
+            const params = new URLSearchParams();
+            formData.forEach((value, key) => {
+                if (value) {
+                    params.append(key, value);
+                }
+            });
+
+            fetch('Catalogo', {
+                method: 'POST',
+                body: params
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const productContainer = document.getElementById('product-container');
+                    productContainer.innerHTML = '';
+                    data.forEach(prodotto => {
+                        const tagsString = prodotto.tags.map(tag => tag.nome).join(', ');
+
+                        const card = `
+                            <div class="card">
+                                <div class="card-inner">
+                                    <div class="card-front">
+                                        <img src="assets/img/ `+prodotto.nomeFoto+ `" alt=" `+prodotto.nome +`Image" onerror="this.src='assets/img/noimg.jpg';">
+                                        <div class="container">
+                                            <h4><b> `+prodotto.nome +`</b></h4>
+                                            <p><b>Descrizione: </b> `+prodotto.descrizione +`</p>
+                                            <p><b>Categoria: </b> `+prodotto.categoriaNome +`</p>
+                                            <p><b>Tag: </b> `+tagsString+`</p>
+                                        </div>
+                                    </div>
+                                    <div class="card-back">
+                                        <h4><b> `+prodotto.nome +`</b></h4>
+                                        <p>N.Pezzi =  `+prodotto.pezziPorzione +`</p>
+                                        <p>Prezzo: € `+prodotto.prezzo +`</p>
+                                        <form action="Carrello" method="post" style="display:inline;">
+                                            <input type="hidden" name="productId" value=" `+prodotto.id +`">
+                                            <input type="hidden" name="action" value="add">
+                                            <button type="submit" class="purchase-button">Aggiungi al Carrello</button>
+                                        </form>
+                                        <button onclick="window.location.href='Prodotto?id= `+prodotto.id +`'">Scopri di più</button>
+                                    </div>
+                                </div>
+                            </div>`;
+                        productContainer.innerHTML += card;
+                    });
+                })
+                .catch(error => console.error('Error:', error));
         }
 
-    </style>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('filter-form').addEventListener('input', fetchFilteredProducts);
+        });
+    </script>
 </head>
 <body>
 <!-- Header -->

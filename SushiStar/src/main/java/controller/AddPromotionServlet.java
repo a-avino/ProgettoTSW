@@ -20,7 +20,7 @@ public class AddPromotionServlet extends HttpServlet {
         Gson gson = new Gson();
 
         Promozione promozione = gson.fromJson(request.getReader(), Promozione.class);
-        boolean success = promozioneDAO.addPromozione(promozione);
+        boolean success = promozioneDAO.doSave(promozione);
 
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
