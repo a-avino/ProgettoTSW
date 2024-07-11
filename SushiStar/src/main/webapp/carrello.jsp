@@ -1,5 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="beans.ProdottoCarrello" %>
+<%@ page import="java.util.Optional" %>
+<%
+    // Recupera i dati del modulo dalla sessione
+    String tipoOrdine = Optional.ofNullable((String) session.getAttribute("tipoOrdine")).orElse("");
+    String indirizzoConsegna = Optional.ofNullable((String) session.getAttribute("indirizzoConsegna")).orElse("");
+    String orarioRitiro = Optional.ofNullable((String) session.getAttribute("orarioRitiro")).orElse("");
+%>
 <html>
 <head>
     <title>Carrello</title>
@@ -261,20 +268,20 @@
             <form action="OrdineServlet" method="post">
                 <div class="order-type-option">
                     <label>Tipo di ordine:</label>
-                    <input type="radio" id="delivery" name="tipoOrdine" value="Delivery" onclick="toggleOrderFields('delivery')" required>
+                    <input type="radio" id="delivery" name="tipoOrdine" value="Delivery" onclick="toggleOrderFields('delivery')" required <%= "Delivery".equals(tipoOrdine) ? "checked" : "" %>>
                     <label for="delivery">Delivery</label>
-                    <input type="radio" id="takeaway" name="tipoOrdine" value="Takeaway" onclick="toggleOrderFields('takeaway')" required>
+                    <input type="radio" id="takeaway" name="tipoOrdine" value="Takeaway" onclick="toggleOrderFields('takeaway')" required <%= "Takeaway".equals(tipoOrdine) ? "checked" : "" %>>
                     <label for="takeaway">Takeaway</label>
                 </div>
 
-                <div id="deliveryFields" class="order-type-option" style="display:none;">
+                <div id="deliveryFields" class="order-type-option" style="display:<%= "Delivery".equals(tipoOrdine) ? "block" : "none" %>;">
                     <label for="indirizzoConsegna">Indirizzo di consegna:</label>
-                    <input type="text" id="indirizzoConsegna" name="indirizzoConsegna">
+                    <input type="text" id="indirizzoConsegna" name="indirizzoConsegna" value="<%= indirizzoConsegna %>">
                 </div>
 
-                <div id="takeawayFields" class="order-type-option" style="display:none;">
+                <div id="takeawayFields" class="order-type-option" style="display:<%= "Takeaway".equals(tipoOrdine) ? "block" : "none" %>;">
                     <label for="orarioRitiro">Orario di ritiro:</label>
-                    <input type="time" id="orarioRitiro" name="orarioRitiro">
+                    <input type="time" id="orarioRitiro" name="orarioRitiro" value="<%= orarioRitiro %>">
                 </div>
 
                 <div class="checkout" style="flex-basis: 100%; text-align: right;">

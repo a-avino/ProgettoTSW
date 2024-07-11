@@ -38,14 +38,21 @@ public class LoginServlet extends HttpServlet {
 
         if (utente != null) {
             HttpSession session = request.getSession();
+            session.setAttribute("utente", utente);
 
-            // Reindirizza in base al ruolo dell'utente
-            if ("admin".equalsIgnoreCase(utente.getRuolo())) {
-                session.setAttribute("admin", utente);
-                response.sendRedirect("admin.jsp"); // Reindirizza alla pagina admin
+            // Recupera l'URL di destinazione dalla sessione
+            String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
+            if (redirectUrl != null) {
+                session.removeAttribute("redirectAfterLogin");
+                response.sendRedirect(redirectUrl);
             } else {
-                session.setAttribute("utente", utente);
-                response.sendRedirect("utente.jsp"); // Reindirizza alla pagina utente
+                // Reindirizza in base al ruolo dell'utente
+                if ("admin".equalsIgnoreCase(utente.getRuolo())) {
+                    session.setAttribute("admin", utente);
+                    response.sendRedirect("admin.jsp"); // Reindirizza alla pagina admin
+                } else {
+                    response.sendRedirect("utente.jsp"); // Reindirizza alla pagina utente
+                }
             }
         } else {
             request.setAttribute("errorMessage", "Invalid email or password");

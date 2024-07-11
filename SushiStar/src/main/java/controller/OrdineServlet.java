@@ -31,6 +31,18 @@ public class OrdineServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Utente utente = (Utente) session.getAttribute("utente");
 
+        if (utente == null) {
+            // Memorizza i dati del modulo nella sessione
+            session.setAttribute("tipoOrdine", tipoOrdine);
+            session.setAttribute("indirizzoConsegna", indirizzoConsegna);
+            session.setAttribute("orarioRitiro", orarioRitiro);
+
+            // Memorizza l'URL di destinazione nella sessione
+            session.setAttribute("redirectAfterLogin", "carrello.jsp");
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
         Ordine ordine = new Ordine();
         ordine.setDataOrdine(new Date(System.currentTimeMillis()));
         ordine.setTipoOrdine(tipoOrdine);
