@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import model.FidelityCardDAO;
 import model.OrdineDAO;
 import model.PromozioneDAO;
+import model.UtenteDAO;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class UtenteServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Utente utente = (Utente) request.getSession().getAttribute("utente");
+
         if (utente == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "User not logged in");
             return;

@@ -48,8 +48,28 @@ public class OrdineDAO {
         }
         return ordini;
     }
+    public void associaOrdineUtente(int ordineId, int utenteId) {
 
-
+        String query = "INSERT INTO Effettua (UtenteID, OrdineID) VALUES (?, ?)";
+        try (Connection con = ConPool.getConnection();PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, utenteId);
+            ps.setInt(2, ordineId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void aggiornaPuntiFedelta(int userId, int puntiAggiunti) {
+        String query = "UPDATE FidelityCard SET Punti = Punti + ? WHERE NumeroCarta = (SELECT FidelityCardID FROM Possiede WHERE UtenteID = ?)";
+        try (Connection con = ConPool.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, puntiAggiunti);
+            ps.setInt(2, userId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public int saveOrdine(Ordine ordine) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement("INSERT INTO Ordine (DataOrdine, TipoOrdine) VALUES (?, ?)", PreparedStatement.RETURN_GENERATED_KEYS);

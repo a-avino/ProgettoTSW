@@ -6,17 +6,15 @@
 .header__logo {
     flex: 1;
     display: flex;
-
     position: relative;
     padding: 20px;
 }
 
-.header__logo-overlay{
+.header__logo-overlay {
     position: absolute;
     inset: 0;
     width: 100%;
     background-color: var(--primary-color);
-
 }
 
 .header__logo h4 {
@@ -24,17 +22,19 @@
     z-index: 100;
     color: white;
     font-size: 35px;
-
 }
 
-.header__menu, header__menu-mobile {
+.header__menu, .header__menu-icons, .header__menu-mobile {
     padding: 20px;
-    flex: 1.2;
     display: flex;
     align-items: center;
+    list-style: none;
+}
+
+.header__menu {
+    flex: 1.2;
     justify-content: flex-end;
     gap: 64px;
-    list-style: none;
 }
 
 .header__menu li {
@@ -45,9 +45,7 @@
     text-transform: uppercase;
     line-height: 20px;
     cursor: pointer;
-
 }
-
 
 .header__menu li img {
     width: 24px;
@@ -58,6 +56,31 @@
 .header__menu-mobile {
     display: none;
     gap: 20px;
-
     position: relative;
+}
+
+@media (max-width: 768px) {
+    .header__menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background-color: var(--primary-color);
+        padding: 10px 0;
+    }
+
+    .header__menu.show {
+        display: flex;
+    }
+
+    .header__menu-mobile {
+        display: flex;
+    }
+
+    .header__menu-mobile img {
+        cursor: pointer;
+    }
+
 }

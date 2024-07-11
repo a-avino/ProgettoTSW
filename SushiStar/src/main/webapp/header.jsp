@@ -21,6 +21,7 @@
             align-items: center;
             padding: 10px 20px;
             border: 1px solid black;
+            position: relative;
         }
 
         .header__logo {
@@ -67,10 +68,41 @@
             width: 24px;
             height: 24px;
         }
+
+        .header__menu-mobile {
+            display: none;
+        }
+
+        @media (max-width: 860px) {
+            .header__menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                background-color: var(--primary-color);
+                padding: 10px 0;
+                z-index: 1099; /* Ensure the menu is above other elements */
+            }
+
+            .header__menu.show {
+                display: flex;
+            }
+
+            .header__menu-mobile {
+                display: flex;
+            }
+
+            .header__menu-mobile img {
+                cursor: pointer;
+            }
+        }
+
     </style>
+
 </head>
 <body>
-
 <header>
     <nav class="header__nav">
         <div class="header__logo">
@@ -81,7 +113,7 @@
             <div class="header__logo-overlay"></div>
         </div>
 
-        <ul class="header__menu" data-aos="fade-down">
+        <ul id="mainMenu" class="header__menu" data-aos="fade-down">
             <li>
                 <a href="${pageContext.request.contextPath}/Catalogo">Menu</a>
             </li>
@@ -113,11 +145,22 @@
 
         <ul class="header__menu-mobile" data-aos="fade-down">
             <li>
-                <img src="assets/img/menu.svg" alt="Menu" />
+                <img src="assets/img/menu.svg" alt="Menu" onclick="toggleMenu()" />
             </li>
         </ul>
     </nav>
 </header>
+
+<script>
+    function toggleMenu() {
+        var mainMenu = document.getElementById('mainMenu');
+        if (mainMenu.classList.contains('show')) {
+            mainMenu.classList.remove('show');
+        } else {
+            mainMenu.classList.add('show');
+        }
+    }
+</script>
 
 </body>
 </html>

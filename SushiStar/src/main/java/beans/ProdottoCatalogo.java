@@ -1,6 +1,7 @@
 package beans;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProdottoCatalogo {
 
@@ -116,5 +117,15 @@ public class ProdottoCatalogo {
                 ", prezzo=" + prezzo +
                 ", categoriaID=" + categoriaID +
                 '}';
+    }
+
+    // Metodo per ottenere i nomi dei tag come una stringa separata da virgole
+    public String getTagNames() {
+        if (tags == null || tags.isEmpty()) {
+            return "";
+        }
+        return tags.stream()
+                .map(Tag::getNome)
+                .collect(Collectors.joining(", "));
     }
 }

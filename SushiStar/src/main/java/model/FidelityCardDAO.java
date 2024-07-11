@@ -18,7 +18,9 @@ public class FidelityCardDAO {
                 FidelityCard fidelityCard = new FidelityCard();
                 fidelityCard.setNumeroCarta(rs.getInt("NumeroCarta"));
                 fidelityCard.setPunti(rs.getInt("Punti"));
+                System.out.println(fidelityCard);
                 return fidelityCard;
+
             }
             return null;
         } catch (SQLException e) {

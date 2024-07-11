@@ -323,6 +323,7 @@
                 <form action="Carrello" method="post" style="display:inline;">
                     <input type="hidden" name="productId" value="<%= prodotto.getId() %>">
                     <input type="hidden" name="action" value="add">
+                    <input type="hidden" id="hiddenQuantity" name="quantity" value="1">
                     <button type="submit" class="purchase-button">Aggiungi al Carrello</button>
                 </form>
                 <button onclick="window.location.href='Prodotto?id=<%= prodotto.getId() %>'">Scopri di più</button>

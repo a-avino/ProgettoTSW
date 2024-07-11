@@ -11,6 +11,17 @@ import java.util.List;
 
 public class UtenteDAO {
 
+    public void aggiornaPuntiFedelta(int userId, int puntiAggiunti) {
+        String query = "UPDATE FidelityCard SET Punti = Punti + ? WHERE NumeroCarta = (SELECT FidelityCardID FROM Possiede WHERE UtenteID = ?)";
+        try (Connection con = ConPool.getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, puntiAggiunti);
+            ps.setInt(2, userId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public boolean emailExists(String email) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT ID FROM Utente WHERE Email = ?");
@@ -90,17 +101,45 @@ public class UtenteDAO {
 
     public boolean doSave(Utente utente) {
         try (Connection con = ConPool.getConnection()) {
+
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO Utente (Nome, Cognome, Email, Password, Ruolo) VALUES (?, ?, ?, ?, ?)");
+                    "INSERT INTO Utente (Nome, Cognome, Email, Password, Ruolo) VALUES (?, ?, ?, ?, ?)",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, utente.getNome());
             ps.setString(2, utente.getCognome());
             ps.setString(3, utente.getEmail());
             ps.setString(4, utente.getPassword()); // Ricorda di hashare la password prima di salvarla
             ps.setString(5, "user"); // Imposta il ruolo di default a "user"
             int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                ResultSet generatedKeys = ps.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int userId = generatedKeys.getInt(1);
+
+                    // Crea una fidelity card per il nuovo utente
+                    PreparedStatement psFidelity = con.prepareStatement(
+                            "INSERT INTO FidelityCard (Punti) VALUES (0)", PreparedStatement.RETURN_GENERATED_KEYS);
+                    psFidelity.executeUpdate();
+                    ResultSet generatedFidelityKeys = psFidelity.getGeneratedKeys();
+                    if (generatedFidelityKeys.next()) {
+                        int fidelityCardId = generatedFidelityKeys.getInt(1);
+
+                        // Associa la fidelity card all'utente
+                        PreparedStatement psPossiede = con.prepareStatement(
+                                "INSERT INTO Possiede (UtenteID, FidelityCardID) VALUES (?, ?)");
+                        psPossiede.setInt(1, userId);
+                        psPossiede.setInt(2, fidelityCardId);
+                        psPossiede.executeUpdate();
+                    }
+                }
+            }
+
             return rowsAffected > 0;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return false;
         }
     }
+
 }

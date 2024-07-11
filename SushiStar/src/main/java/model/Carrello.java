@@ -17,14 +17,13 @@ public class Carrello implements Serializable {
         prodotti = new ArrayList<>();
     }
 
-    public void aggiungiProdotto(ProdottoCatalogo product) {
+    public void aggiungiProdotto(ProdottoCatalogo product, int quantità) {
         ProdottoCarrello cartProd = new ProdottoCarrello(product);
         if (prodotti.contains(cartProd)) {
             var prod = prodotti.get(prodotti.indexOf(cartProd));
-            prod.setQuantità(prod.getQuantità() + 1);
+            prod.setQuantità(prod.getQuantità() + quantità);
         } else {
-
-            cartProd.setQuantità(1);
+            cartProd.setQuantità(quantità);
             prodotti.add(cartProd);
         }
     }
@@ -40,7 +39,7 @@ public class Carrello implements Serializable {
     }
 
     public boolean isEmpty() {
-        return prodotti.size() > 0 ? false : true;
+        return prodotti.isEmpty();
     }
 
     public List<ProdottoCarrello> getProdotti() {
@@ -65,7 +64,6 @@ public class Carrello implements Serializable {
 
     public void rimuoviTutti() {
         prodotti = new ArrayList<>();
-
     }
 
     public void aggiornaProdotti(ProdottoCatalogo prodotto, int quantità) {

@@ -1,12 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="beans.ProdottoCarrello" %>
-<%@ page import="java.util.Optional" %>
-<%
-    // Recupera i dati del modulo dalla sessione
-    String tipoOrdine = Optional.ofNullable((String) session.getAttribute("tipoOrdine")).orElse("");
-    String indirizzoConsegna = Optional.ofNullable((String) session.getAttribute("indirizzoConsegna")).orElse("");
-    String orarioRitiro = Optional.ofNullable((String) session.getAttribute("orarioRitiro")).orElse("");
-%>
 <html>
 <head>
     <title>Carrello</title>
@@ -128,37 +121,37 @@
 
         /* Styles for the order type section */
         .order-type-container {
-            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             padding: 20px;
             background-color: #f2f2f2;
             border-radius: 8px;
-            display: flex;
             flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .order-type-container label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
         }
 
         .order-type-option {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
             flex: 1;
-            min-width: 200px;
         }
 
-        .order-type-container input[type="radio"] {
+        .order-type-option label {
             margin-right: 10px;
         }
 
-        .order-type-container input[type="text"],
-        .order-type-container input[type="time"] {
-            width: calc(100% - 20px);
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        #deliveryFields, #takeawayFields {
+            display: none;
+            align-items: center;
+            margin-right: 20px;
+            flex: 1;
+        }
+
+        .checkout {
+            display: flex;
+            justify-content: flex-end;
+            flex: 1;
         }
 
         /* Responsive Styles */
@@ -232,7 +225,7 @@
             <tr class="productitm">
                 <td data-label="Foto"><img src="assets/img/<%= prod.getProdotto().getNomeFoto() %>" class="thumb" alt="<%= prod.getProdotto().getNome() %>"></td>
                 <td data-label="Quantità">
-                    <p><%= prod.getQuantità() %></p>
+                    <%= prod.getQuantità() %>
                 </td>
                 <td data-label="Prodotto"><%= prod.getProdotto().getNome() %></td>
                 <td data-label="Totale">€ <%= prod.getPrezzoTotale() %></td>
@@ -268,20 +261,20 @@
             <form action="OrdineServlet" method="post">
                 <div class="order-type-option">
                     <label>Tipo di ordine:</label>
-                    <input type="radio" id="delivery" name="tipoOrdine" value="Delivery" onclick="toggleOrderFields('delivery')" required <%= "Delivery".equals(tipoOrdine) ? "checked" : "" %>>
+                    <input type="radio" id="delivery" name="tipoOrdine" value="Delivery" onclick="toggleOrderFields('delivery')" required>
                     <label for="delivery">Delivery</label>
-                    <input type="radio" id="takeaway" name="tipoOrdine" value="Takeaway" onclick="toggleOrderFields('takeaway')" required <%= "Takeaway".equals(tipoOrdine) ? "checked" : "" %>>
+                    <input type="radio" id="takeaway" name="tipoOrdine" value="Takeaway" onclick="toggleOrderFields('takeaway')" required>
                     <label for="takeaway">Takeaway</label>
                 </div>
 
-                <div id="deliveryFields" class="order-type-option" style="display:<%= "Delivery".equals(tipoOrdine) ? "block" : "none" %>;">
+                <div id="deliveryFields" class="order-type-option" style="display:none;">
                     <label for="indirizzoConsegna">Indirizzo di consegna:</label>
-                    <input type="text" id="indirizzoConsegna" name="indirizzoConsegna" value="<%= indirizzoConsegna %>">
+                    <input type="text" id="indirizzoConsegna" name="indirizzoConsegna">
                 </div>
 
-                <div id="takeawayFields" class="order-type-option" style="display:<%= "Takeaway".equals(tipoOrdine) ? "block" : "none" %>;">
+                <div id="takeawayFields" class="order-type-option" style="display:none;">
                     <label for="orarioRitiro">Orario di ritiro:</label>
-                    <input type="time" id="orarioRitiro" name="orarioRitiro" value="<%= orarioRitiro %>">
+                    <input type="time" id="orarioRitiro" name="orarioRitiro">
                 </div>
 
                 <div class="checkout" style="flex-basis: 100%; text-align: right;">
@@ -297,8 +290,8 @@
 
 <script>
     function toggleOrderFields(type) {
-        document.getElementById('deliveryFields').style.display = type === 'delivery' ? 'block' : 'none';
-        document.getElementById('takeawayFields').style.display = type === 'takeaway' ? 'block' : 'none';
+        document.getElementById('deliveryFields').style.display = type === 'delivery' ? 'flex' : 'none';
+        document.getElementById('takeawayFields').style.display = type === 'takeaway' ? 'flex' : 'none';
     }
 </script>
 </body>

@@ -46,23 +46,22 @@ public class ServletCarrello extends HttpServlet {
         if (action != null && prodotto != null) {
             switch (action) {
                 case "add":
-                    carrello.aggiungiProdotto(prodotto);
+                    String quantitaStr = request.getParameter("quantity");
+                    int quantita = 1;
+                    try {
+                        quantita = Integer.parseInt(quantitaStr);
+                    } catch (NumberFormatException e) {
+                        // handle exception if needed
+                    }
+                    carrello.aggiungiProdotto(prodotto, quantita);
                     break;
                 case "remove":
                     carrello.rimuoviProdotto(prodotto);
                     break;
-                case "update":
-                    String quantitaStr = request.getParameter("quantità");
-                    int quantità = 1;
-                    try {
-                        quantità = Integer.parseInt(quantitaStr);
-                    } catch (NumberFormatException e) {
-                        // handle exception if needed
-                    }
-                    carrello.aggiornaProdotti(prodotto, quantità);
-                    break;
                 case "clear":
                     carrello.rimuoviTutti();
+                    break;
+                default:
                     break;
             }
         }

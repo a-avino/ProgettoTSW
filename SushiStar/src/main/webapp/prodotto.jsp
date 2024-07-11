@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="it">
@@ -17,6 +16,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 900px;
             margin: 20px auto;
+            min-height: calc(100vh - 300px); /* Altezza minima per riempire la pagina */
         }
 
         .product-image {
@@ -184,29 +184,30 @@
 <%@ include file="header.jsp" %>
 
 <div class="breadcrumb">
-    <a href="index.jsp">Home</a> &gt; <a href="${pageContext.request.contextPath}/Catalogo">Catologo</a> &gt; <span>Prodotto</span>
+    <a href="index.jsp">Home</a> &gt; <a href="${pageContext.request.contextPath}/Catalogo">Catalogo</a> &gt; <span>Prodotto</span>
 </div>
 
-<div class="container">
+<div class="container" style="margin-bottom: 60px">
     <div class="product-image">
         <img src="assets/img/${prodotto.nomeFoto}" alt="${prodotto.nome} Image" onerror="this.src='assets/img/noimg.jpg';" style="max-width: 100%; max-height: 100%;">
     </div>
+
     <div class="product-info">
         <div class="product-name">${prodotto.nome}</div>
         <div class="product-description">${prodotto.descrizione}</div>
         <div class="product-description">${prodotto.categoriaNome}</div>
-        <div class="product-description">${prodotto.tags}</div>
         <div class="product-price">€ ${prodotto.prezzo}</div>
 
         <div class="product-controls">
             <div class="quantity-selector">
-                <button onclick="decreaseQuantity()">-</button>
-                <input type="text" id="quantity" value="1">
-                <button onclick="increaseQuantity()">+</button>
+                <button type="button" onclick="decreaseQuantity()">-</button>
+                <input type="text" id="quantity" value="1" readonly>
+                <button type="button" onclick="increaseQuantity()">+</button>
             </div>
             <form action="Carrello" method="post" style="display:inline;">
                 <input type="hidden" name="productId" value="${prodotto.getId()}">
                 <input type="hidden" name="action" value="add">
+                <input type="hidden" id="hiddenQuantity" name="quantity" value="1">
                 <button type="submit" class="purchase-button">ACQUISTA</button>
             </form>
         </div>
@@ -221,6 +222,7 @@
     function increaseQuantity() {
         var quantityInput = document.getElementById('quantity');
         quantityInput.value = parseInt(quantityInput.value) + 1;
+        syncQuantity();
     }
 
     function decreaseQuantity() {
@@ -228,6 +230,13 @@
         if (quantityInput.value > 1) {
             quantityInput.value = parseInt(quantityInput.value) - 1;
         }
+        syncQuantity();
+    }
+
+    function syncQuantity() {
+        var quantityInput = document.getElementById('quantity');
+        var hiddenQuantityInput = document.getElementById('hiddenQuantity');
+        hiddenQuantityInput.value = quantityInput.value;
     }
 </script>
 </body>

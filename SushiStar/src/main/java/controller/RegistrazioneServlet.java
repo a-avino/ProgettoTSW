@@ -10,10 +10,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+import static org.apache.taglibs.standard.functions.Functions.substring;
+import static utility.Utility.toHash;
 
 @WebServlet("/RegistrazioneServlet")
 public class RegistrazioneServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String nome = request.getParameter("nome");
         String cognome = request.getParameter("cognome");
         String email = request.getParameter("email");
@@ -32,12 +37,13 @@ public class RegistrazioneServlet extends HttpServlet {
         utente.setNome(nome);
         utente.setCognome(cognome);
         utente.setEmail(email);
-        utente.setPassword(password); // Ricorda di hashare la password prima di salvarla
+        utente.setPassword(toHash(password)); // Ricorda di hashare la password prima di salvarla
         utente.setRuolo("cliente");
 
         if (utenteDAO.doSave(utente)) {
             // Crea una sessione e imposta l'utente appena registrato
             HttpSession session = request.getSession();
+            utente = utenteDAO.doLogin(utente.getEmail(), utente.getPassword());
             session.setAttribute("utente", utente);
             response.sendRedirect("utente.jsp"); // Reindirizza alla pagina del profilo utente
         } else {

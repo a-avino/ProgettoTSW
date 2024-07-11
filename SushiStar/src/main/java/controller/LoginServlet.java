@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import static utility.Utility.toHash;
+
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,7 +36,7 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         UtenteDAO utenteDAO = new UtenteDAO();
-        Utente utente = utenteDAO.doLogin(email, password);
+        Utente utente = utenteDAO.doLogin(email, toHash(password));
 
         if (utente != null) {
             HttpSession session = request.getSession();
