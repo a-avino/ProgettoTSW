@@ -11,17 +11,7 @@ import java.util.List;
 
 public class UtenteDAO {
 
-    public void aggiornaPuntiFedelta(int userId, int puntiAggiunti) {
-        String query = "UPDATE FidelityCard SET Punti = Punti + ? WHERE NumeroCarta = (SELECT FidelityCardID FROM Possiede WHERE UtenteID = ?)";
-        try (Connection con = ConPool.getConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setInt(1, puntiAggiunti);
-            ps.setInt(2, userId);
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+
     public boolean emailExists(String email) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement("SELECT ID FROM Utente WHERE Email = ?");

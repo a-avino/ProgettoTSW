@@ -1,13 +1,7 @@
 package controller;
 
-import beans.Ordine;
-import beans.Delivery;
-import beans.Takeaway;
-import beans.Utente;
-import model.OrdineDAO;
-import model.DeliveryDAO;
-import model.UtenteDAO;
-import model.TakeawayDAO;
+import beans.*;
+import model.*;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,8 +15,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
-
+import java.util.List;
 
 @WebServlet("/OrdineServlet")
 public class OrdineServlet extends HttpServlet {
@@ -47,12 +40,12 @@ public class OrdineServlet extends HttpServlet {
         }
 
         OrdineDAO ordineDAO = new OrdineDAO();
+        ProdottoOrdineDAO prodottoOrdineDAO = new ProdottoOrdineDAO();
         DeliveryDAO deliveryDAO = new DeliveryDAO();
         TakeawayDAO takeawayDAO = new TakeawayDAO();
         UtenteDAO utenteDAO = new UtenteDAO();
 
         try {
-
             // Salva l'ordine
             Ordine ordine = new Ordine();
             ordine.setDataOrdine(new Date(System.currentTimeMillis()));
@@ -82,8 +75,18 @@ public class OrdineServlet extends HttpServlet {
             // Associa l'ordine all'utente
             ordineDAO.associaOrdineUtente(ordineId, utente.getId());
 
-            // Aggiorna i punti fedeltà dell'utente
-            utenteDAO.aggiornaPuntiFedelta(utente.getId(), 100);
+            // Recupera i prodotti dal carrello e salva i prodotti dell'ordine
+            Carrello carrello = (Carrello) session.getAttribute("carrello");
+            List<ProdottoCarrello> prodotti = carrello.getProdotti();
+
+            for (ProdottoCarrello prodottoCarrello: prodotti ) {
+                ProdottoOrdine prodottoOrdine = new ProdottoOrdine();
+                prodottoOrdine.setNome(prodottoCarrello.getProdotto().getNome());
+                prodottoOrdine.setPrezzo(prodottoCarrello.getProdotto().getPrezzo());
+                prodottoOrdine.setQuantita(prodottoCarrello.getQuantità());
+                prodottoOrdine.setOrdineID(ordineId); // Associa il prodotto all'ordine
+                prodottoOrdineDAO.saveProdottoOrdine(prodottoOrdine); // Salva il prodotto dell'ordine
+            }
 
             // Rimuovi il carrello dalla sessione
             session.removeAttribute("carrello");
