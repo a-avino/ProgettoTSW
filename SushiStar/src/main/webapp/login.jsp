@@ -59,8 +59,10 @@
             transition: background-color 0.3s;
             box-sizing: border-box;
         }
-        .login-container button:hover {
+        .login-container button:hover,
+        .login-container button:focus {
             background-color: #ff6347;
+            outline: none;
         }
         .error {
             color: red;
@@ -71,6 +73,14 @@
             width: 100px;
             margin-bottom: 20px;
         }
+        label {
+            display: block;
+            text-align: left;
+            width: 100%;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -80,8 +90,10 @@
     <h2>Login</h2>
     <p>Benvenuto! Per favore, accedi al tuo account.</p>
     <form action="LoginServlet" method="post">
-        <input type="text" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" placeholder="Email" required>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
         <p>Non sei ancora registrato? <a href="registrazione.jsp">Registrati qui!</a></p>
         <p class="error">
@@ -98,7 +110,6 @@
 </div>
 
 <script>
-
     document.addEventListener('DOMContentLoaded', function() {
         const errorMessage = document.querySelector('.error').innerText.trim();
         if (errorMessage) {

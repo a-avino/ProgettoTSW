@@ -44,6 +44,10 @@
             border: 1px solid #ddd;
             border-radius: 5px;
         }
+        .registration-container input:focus {
+            border-color: #ff4500;
+            outline: none;
+        }
         .registration-container button {
             padding: 10px;
             font-size: 16px;
@@ -53,13 +57,23 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .registration-container button:hover {
+        .registration-container button:hover,
+        .registration-container button:focus {
             background-color: #ff6347;
+            outline: none;
         }
         .error-message {
             color: red;
             text-align: center;
             margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            text-align: left;
+            width: 100%;
+            margin-bottom: 5px;
+            font-weight: 700;
+            color: #333;
         }
     </style>
     <script>
@@ -114,9 +128,13 @@
     <img src="assets/img/sushi.png" alt="SushiStar Logo">
     <h2>Registrazione</h2>
     <form action="RegistrazioneServlet" method="post" onsubmit="return validateForm()">
+        <label for="nome">Nome</label>
         <input type="text" id="nome" name="nome" placeholder="Nome" required>
+        <label for="cognome">Cognome</label>
         <input type="text" id="cognome" name="cognome" placeholder="Cognome" required>
+        <label for="email">Email</label>
         <input type="email" id="email" name="email" placeholder="Email" required>
+        <label for="password">Password</label>
         <input type="password" id="password" name="password" placeholder="Password" required>
         <button type="submit">Registrati</button>
     </form>

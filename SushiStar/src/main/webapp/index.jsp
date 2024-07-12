@@ -9,6 +9,12 @@
     <link rel="stylesheet" href="css/styles.css">
     <title>SushiStar</title>
     <style>
+        button:focus,
+        a:focus {
+            outline: 2px solid #ff4500; /* Cambia il colore a tua scelta */
+            outline-offset: 2px;
+        }
+
         .popular-foods {
             display: flex;
             flex-direction: column;
@@ -339,7 +345,7 @@
     <h2 data-aos="flip-down">
         Entra a far parte della famiglia SushiStar!
     </h2>
-    <button class="subscription-button" data-aos="zoom-in">Registrati</button>
+    <a class="subscription-button" data-aos="zoom-in" href="registrazione.jsp">Registrati</a>
 </section>
 <!-- Footer -->
 <%@ include file="footer.jsp"%>

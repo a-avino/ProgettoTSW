@@ -243,48 +243,48 @@
         <div>
             <h3>Filtra prodotti per ...</h3>
 
-            <label> Categorie:
-                <select name="categoria">
-                    <option value="">Tutte le categorie</option>
-                    <%
-                        Collection<Categoria> categorie = (Collection<Categoria>) request.getAttribute("categorie");
-                        if (categorie != null) {
-                            for (Categoria categoria : categorie) {
-                    %>
-                    <option value="<%= categoria.getId() %>"><%= categoria.getNome() %></option>
-                    <%
-                            }
+            <label for="categoria">Categorie:</label>
+            <select id="categoria" name="categoria">
+                <option value="">Tutte le categorie</option>
+                <%
+                    Collection<Categoria> categorie = (Collection<Categoria>) request.getAttribute("categorie");
+                    if (categorie != null) {
+                        for (Categoria categoria : categorie) {
+                %>
+                <option value="<%= categoria.getId() %>"><%= categoria.getNome() %></option>
+                <%
                         }
-                    %>
-                </select>
-            </label>
+                    }
+                %>
+            </select>
 
-            <label> Tag:
-                <select name="tag">
-                    <option value="">Tutti i tag</option>
-                    <%
-                        Collection<Tag> tags = (Collection<Tag>) request.getAttribute("tags");
-                        if (tags != null) {
-                            for (Tag tag : tags) {
-                    %>
-                    <option value="<%= tag.getId() %>"><%= tag.getNome() %></option>
-                    <%
-                            }
+            <label for="tag">Tag:</label>
+            <select id="tag" name="tag">
+                <option value="">Tutti i tag</option>
+                <%
+                    Collection<Tag> tags = (Collection<Tag>) request.getAttribute("tags");
+                    if (tags != null) {
+                        for (Tag tag : tags) {
+                %>
+                <option value="<%= tag.getId() %>"><%= tag.getNome() %></option>
+                <%
                         }
-                    %>
-                </select>
-            </label>
-            <label> Prezzo:
-                <select name="prezzo">
-                    <option value="asc">Prezzo Crescente</option>
-                    <option value="desc">Prezzo Decrescente</option>
-                </select>
-            </label>
+                    }
+                %>
+            </select>
 
+            <label for="prezzo">Prezzo:</label>
+            <select id="prezzo" name="prezzo">
+                <option value="asc">Prezzo Crescente</option>
+                <option value="desc">Prezzo Decrescente</option>
+            </select>
+
+            <label for="search-bar">Cerca prodotto:</label>
             <input type="text" id="search-bar" name="search" placeholder="Cerca prodotto...">
         </div>
     </form>
 </div>
+
 <main id="product-container">
 
     <%

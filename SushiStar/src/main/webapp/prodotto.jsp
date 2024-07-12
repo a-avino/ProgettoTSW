@@ -21,7 +21,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 900px;
             margin: 20px auto;
-            min-height: calc(100vh - 300px); /* Altezza minima per riempire la pagina */
+            min-height: calc(100vh - 300px);
         }
 
         .product-image {
@@ -103,8 +103,10 @@
             transition: background-color 0.2s;
         }
 
-        .quantity-selector button:hover {
+        .quantity-selector button:hover,
+        .quantity-selector button:focus {
             background-color: #f0f0f0;
+            outline: none;
         }
 
         .purchase-button {
@@ -117,10 +119,11 @@
             transition: background-color 0.2s;
         }
 
-        .purchase-button:hover {
+        .purchase-button:hover,
+        .purchase-button:focus {
             background-color: #f0f0f0;
+            outline: none;
         }
-
 
         .breadcrumb {
             margin: 20px auto;
@@ -205,6 +208,7 @@
 
         <div class="product-controls">
             <div class="quantity-selector">
+                <label for="quantity" class="visually-hidden">Quantità:</label>
                 <button type="button" onclick="decreaseQuantity()">-</button>
                 <input type="text" id="quantity" value="1" readonly>
                 <button type="button" onclick="increaseQuantity()">+</button>
