@@ -114,14 +114,12 @@ public class ProdottoCatalogoDAO {
     public boolean update(ProdottoCatalogo prodottoCatalogo) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
-                    "UPDATE ProdottoCatalogo SET Nome = ?, Descrizione = ?, CategoriaID = ?, Prezzo = ?, PezziPorzione = ?, Foto = ? WHERE ID = ?");
+                    "UPDATE ProdottoCatalogo SET Nome = ?, Descrizione = ?, Prezzo = ?, PezziPorzione = ? WHERE ID = ?");
             ps.setString(1, prodottoCatalogo.getNome());
             ps.setString(2, prodottoCatalogo.getDescrizione());
-            ps.setInt(3, prodottoCatalogo.getCategoriaID());
-            ps.setFloat(4, prodottoCatalogo.getPrezzo());
-            ps.setInt(5, prodottoCatalogo.getPezziPorzione());
-            ps.setString(6, prodottoCatalogo.getNomeFoto());
-            ps.setInt(7, prodottoCatalogo.getId());
+            ps.setFloat(3, prodottoCatalogo.getPrezzo());
+            ps.setInt(4, prodottoCatalogo.getPezziPorzione());
+            ps.setInt(5, prodottoCatalogo.getId());
 
             int rowsUpdated = ps.executeUpdate();
             return rowsUpdated > 0;

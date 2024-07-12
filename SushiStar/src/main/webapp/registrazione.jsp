@@ -101,7 +101,7 @@
                 errorMessage.innerHTML = 'Password è richiesta.';
                 return false;
             }
-            if (password.length < 6) {
+            if (password.length < 8) {
                 errorMessage.innerHTML = 'La password deve avere almeno 6 caratteri.';
                 return false;
             }

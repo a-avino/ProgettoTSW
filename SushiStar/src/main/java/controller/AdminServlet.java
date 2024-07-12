@@ -1,5 +1,6 @@
 package controller;
 
+import beans.ProdottoOrdine;
 import beans.Utente;
 import beans.Ordine;
 import beans.ProdottoCatalogo;
@@ -59,6 +60,13 @@ public class AdminServlet extends HttpServlet {
                 int productId = Integer.parseInt(request.getParameter("id"));
                 ProdottoCatalogo prodotto = prodottoCatalogoDAO.doRetriveByID(productId);
                 data.put("prodotto", prodotto);
+                break;
+            case "getOrderDetails":
+                int orderId = Integer.parseInt(request.getParameter("id"));
+                Ordine ordine = ordineDAO.doRetrieveById(orderId);
+                List<ProdottoOrdine> prodottiOrdine = ordineDAO.getProdottiOrdine(orderId);
+                data.put("ordine", ordine);
+                data.put("prodottiOrdine", prodottiOrdine);
                 break;
         }
 

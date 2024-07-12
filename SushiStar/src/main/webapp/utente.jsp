@@ -98,6 +98,21 @@
         .footer .social img {
             height: 30px;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
         @media (min-width: 768px) {
             .main-container {
                 flex-direction: row;
@@ -110,6 +125,24 @@
                 width: 80%;
                 margin-left: 20px;
             }
+        }
+        .details-button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            border: none;
+            color: #fff;
+            background-color: #007BFF; /* Blu */
+        }
+        .details-button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .details-button:active {
+            background-color: #0056b3;
+            transform: scale(1);
         }
     </style>
 </head>
@@ -132,28 +165,29 @@
 <%@ include file="footer.jsp" %>
 
 <script>
-    function fetchData(callback) {
-        fetch('UtenteServlet')
+    function fetchData(action, callback) {
+        fetch('UtenteServlet?action=' + action)
             .then(response => response.json())
             .then(data => {
-                console.log('Fetched data:', data); // Log di debug
+                console.log('Fetched data:', data);
                 callback(data);
             })
             .catch(error => console.error('Error fetching data:', error));
     }
 
-
     function showOrders() {
-        fetchData(data => {
+        fetchData('getOrders', data => {
             const content = document.getElementById('main-content');
             const ordini = data.ordini;
-            console.log('Ordini:', ordini); // Log di debug
+            console.log('Ordini:', ordini);
             if (ordini.length > 0) {
-                let ordersHtml = '<h3>I Tuoi Ordini</h3><ul>';
+                let ordersHtml = '<h3>I Tuoi Ordini</h3>';
+                ordersHtml += '<table><tr><th>Ordine ID</th><th>Data</th><th>Tipo</th><th>Dettagli</th></tr>';
                 ordini.forEach(ordine => {
-                    ordersHtml += `<li>Ordine ID: `+ordine.id+` - Data:`+ordine.dataOrdine+` - Tipo:`+ordine.tipoOrdine+`</li>`;
+                    ordersHtml += `<tr><td>` + ordine.id + `</td><td>` + ordine.dataOrdine + `</td><td>` + ordine.tipoOrdine + `</td>
+                    <td><button class="details-button" onclick="showOrderDetails(` + ordine.id + `)">Dettagli</button></td></tr>`;
                 });
-                ordersHtml += '</ul>';
+                ordersHtml += '</table>';
                 content.innerHTML = ordersHtml;
             } else {
                 content.innerHTML = `
@@ -164,8 +198,29 @@
         });
     }
 
-
-
+    function showOrderDetails(orderId) {
+        fetch('UtenteServlet?action=getOrderDetails&id=' + orderId)
+            .then(response => response.json())
+            .then(data => {
+                const ordine = data.ordine;
+                const prodottiOrdine = data.prodottiOrdine;
+                const content = document.getElementById('main-content');
+                let detailsHtml = `
+                    <h3>Dettagli Ordine</h3>
+                    <p>ID Ordine: ` + ordine.id + `</p>
+                    <p>Data Ordine: ` + ordine.dataOrdine + `</p>
+                    <p>Tipo Ordine: ` + ordine.tipoOrdine + `</p>
+                    <h4>Prodotti</h4>
+                    <table><tr><th>Nome</th><th>Quantità</th><th>Prezzo</th></tr>`;
+                prodottiOrdine.forEach(prodotto => {
+                    detailsHtml += `<tr><td>` + prodotto.nome + `</td><td>` + prodotto.quantita + `</td><td>` + prodotto.prezzo + `</td></tr>`;
+                });
+                detailsHtml += `</table>
+                    <button  class="details-button" onclick="showOrders()">Torna agli Ordini</button>`;
+                content.innerHTML = detailsHtml;
+            })
+            .catch(error => console.error('Error fetching order details:', error));
+    }
 
     function logoutConfirmation() {
         if (confirm("Sei sicuro di voler effettuare il logout?")) {

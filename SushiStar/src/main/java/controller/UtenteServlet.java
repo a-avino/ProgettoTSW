@@ -2,6 +2,7 @@ package controller;
 
 import beans.Ordine;
 import beans.Utente;
+import beans.ProdottoOrdine;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,14 +27,33 @@ public class UtenteServlet extends HttpServlet {
             return;
         }
 
+        String action = request.getParameter("action");
+        if (action == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Action parameter is missing");
+            return;
+        }
+
         OrdineDAO ordineDAO = new OrdineDAO();
-
-        List<Ordine> ordini = ordineDAO.getOrdiniByUserId(utente.getId());
-
+        OrdineDAO prodottoOrdineDAO = new OrdineDAO();
 
         Map<String, Object> result = new HashMap<>();
-        result.put("ordini", ordini);
 
+        switch (action) {
+            case "getOrders":
+                List<Ordine> ordini = ordineDAO.getOrdiniByUserId(utente.getId());
+                result.put("ordini", ordini);
+                break;
+            case "getOrderDetails":
+                int orderId = Integer.parseInt(request.getParameter("id"));
+                Ordine ordine = ordineDAO.doRetrieveById(orderId);
+                List<ProdottoOrdine> prodottiOrdine = prodottoOrdineDAO.getProdottiOrdineByOrdineId(orderId);
+                result.put("ordine", ordine);
+                result.put("prodottiOrdine", prodottiOrdine);
+                break;
+            default:
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown action: " + action);
+                return;
+        }
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

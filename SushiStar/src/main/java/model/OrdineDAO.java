@@ -1,6 +1,7 @@
 package model;
 
 import beans.Ordine;
+import beans.ProdottoOrdine;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +11,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrdineDAO {
+    public Ordine doRetrieveById(int id) {
+        Ordine ordine = null;
+        try (Connection con = ConPool.getConnection()) {
+            String query = "SELECT * FROM Ordine WHERE ID = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                ordine = new Ordine();
+                ordine.setId(rs.getInt("ID"));
+                ordine.setDataOrdine(rs.getDate("DataOrdine"));
+                ordine.setTipoOrdine(rs.getString("TipoOrdine"));
+
+                // Recupera i prodotti associati a questo ordine
+                List<ProdottoOrdine> prodottiOrdine = getProdottiOrdineByOrdineId(ordine.getId());
+                ordine.setProdottiOrdine(prodottiOrdine);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return ordine;
+    }
+
+    public List<ProdottoOrdine> getProdottiOrdineByOrdineId(int ordineId) {
+        List<ProdottoOrdine> prodottiOrdine = new ArrayList<>();
+        try (Connection con = ConPool.getConnection()) {
+            String query = "SELECT * FROM ProdottoOrdine WHERE OrdineID = ?";
+            PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1, ordineId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ProdottoOrdine prodottoOrdine = new ProdottoOrdine();
+                prodottoOrdine.setId(rs.getInt("ID"));
+                prodottoOrdine.setNome(rs.getString("Nome"));
+                prodottoOrdine.setPrezzo(rs.getFloat("Prezzo"));
+                prodottoOrdine.setQuantita(rs.getInt("Quantita"));
+                prodottoOrdine.setOrdineID(rs.getInt("OrdineID"));
+                prodottiOrdine.add(prodottoOrdine);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return prodottiOrdine;
+    }
+
     public List<Ordine> getOrdiniByUserId(int userId) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -73,6 +119,26 @@ public class OrdineDAO {
             } else {
                 throw new SQLException("Errore nel recupero dell'ID generato per l'ordine.");
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<ProdottoOrdine> getProdottiOrdine(int ordineId) {
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM ProdottoOrdine WHERE OrdineID = ?");
+            ps.setInt(1, ordineId);
+            ResultSet rs = ps.executeQuery();
+            List<ProdottoOrdine> prodotti = new ArrayList<>();
+            while (rs.next()) {
+                ProdottoOrdine prodotto = new ProdottoOrdine();
+                prodotto.setId(rs.getInt("ID"));
+                prodotto.setNome(rs.getString("Nome"));
+                prodotto.setPrezzo(rs.getFloat("Prezzo"));
+                prodotto.setQuantita(rs.getInt("Quantita"));
+                prodotti.add(prodotto);
+            }
+            return prodotti;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

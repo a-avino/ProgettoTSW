@@ -109,7 +109,7 @@ public class UtenteDAO {
             ps.setString(2, utente.getCognome());
             ps.setString(3, utente.getEmail());
             ps.setString(4, utente.getPassword()); // Ricorda di hashare la password prima di salvarla
-            ps.setString(5, "user"); // Imposta il ruolo di default a "user"
+            ps.setString(5, "cliente");
             int rowsAffected = ps.executeUpdate();
 
             return rowsAffected > 0;
