@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Login - SushiStar</title>
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/sushi.png" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
     <style>
         body {
@@ -97,6 +98,7 @@
 </div>
 
 <script>
+
     document.addEventListener('DOMContentLoaded', function() {
         const errorMessage = document.querySelector('.error').innerText.trim();
         if (errorMessage) {

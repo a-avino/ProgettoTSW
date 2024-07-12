@@ -1,12 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="beans.ProdottoCatalogo" %>
+
+<%
+    ProdottoCatalogo prodotto = (ProdottoCatalogo) request.getAttribute("prodotto");
+%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/sushi.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Page</title>
     <style>
-
         .container {
             display: flex;
             align-items: center;
@@ -196,7 +201,7 @@
         <div class="product-name">${prodotto.nome}</div>
         <div class="product-description">${prodotto.descrizione}</div>
         <div class="product-description">${prodotto.categoriaNome}</div>
-        <div class="product-price">€ ${prodotto.prezzo}</div>
+        <div class="product-price">€ <%= String.format("%.2f", prodotto.getPrezzo()) %></div>
 
         <div class="product-controls">
             <div class="quantity-selector">

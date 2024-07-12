@@ -2,10 +2,10 @@ package controller;
 
 import beans.Utente;
 import beans.Ordine;
-import beans.Promozione;
+import beans.ProdottoCatalogo;
 import model.UtenteDAO;
 import model.OrdineDAO;
-import model.PromozioneDAO;
+import model.ProdottoCatalogoDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -38,7 +38,7 @@ public class AdminServlet extends HttpServlet {
 
         UtenteDAO utenteDAO = new UtenteDAO();
         OrdineDAO ordineDAO = new OrdineDAO();
-        PromozioneDAO promozioneDAO = new PromozioneDAO();
+        ProdottoCatalogoDAO prodottoCatalogoDAO = new ProdottoCatalogoDAO();
 
         Map<String, Object> data = new HashMap<>();
 
@@ -51,9 +51,14 @@ public class AdminServlet extends HttpServlet {
                 List<Ordine> ordini = ordineDAO.doRetrieveAll();
                 data.put("ordini", ordini);
                 break;
-            case "getPromotions":
-                List<Promozione> promozioni = promozioneDAO.doRetrieveAll();
-                data.put("promozioni", promozioni);
+            case "getProducts":
+                List<ProdottoCatalogo> prodotti = (List<ProdottoCatalogo>) prodottoCatalogoDAO.doRetriveAll(null);
+                data.put("prodotti", prodotti);
+                break;
+            case "getProduct":
+                int productId = Integer.parseInt(request.getParameter("id"));
+                ProdottoCatalogo prodotto = prodottoCatalogoDAO.doRetriveByID(productId);
+                data.put("prodotto", prodotto);
                 break;
         }
 
@@ -77,19 +82,34 @@ public class AdminServlet extends HttpServlet {
             return;
         }
 
-        PromozioneDAO promozioneDAO = new PromozioneDAO();
+        ProdottoCatalogoDAO prodottoCatalogoDAO = new ProdottoCatalogoDAO();
 
-        switch (action) {
-            case "deletePromotion":
-                int promoId = Integer.parseInt(request.getParameter("id"));
-                boolean deleted = promozioneDAO.deletePromotion(promoId);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(new Gson().toJson(Map.of("success", deleted)));
-                break;
-            default:
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown action");
-                break;
+        if ("updateProduct".equals(action)) {
+            int productId = Integer.parseInt(request.getParameter("id"));
+            ProdottoCatalogo prodotto = new Gson().fromJson(request.getReader(), ProdottoCatalogo.class);
+            prodotto.setId(productId);
+
+            boolean success = prodottoCatalogoDAO.update(prodotto);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("success", success);
+
+            String json = new Gson().toJson(data);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json);
+        } else if ("deleteProduct".equals(action)) {
+            int productId = Integer.parseInt(request.getParameter("id"));
+            System.out.println(productId);
+            boolean success = prodottoCatalogoDAO.delete(productId);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("success", success);
+
+            String json = new Gson().toJson(data);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json);
         }
     }
 }

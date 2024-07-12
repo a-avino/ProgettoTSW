@@ -1,8 +1,6 @@
 package controller;
 
-import beans.FidelityCard;
 import beans.Ordine;
-import beans.Promozione;
 import beans.Utente;
 import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
@@ -10,10 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.FidelityCardDAO;
 import model.OrdineDAO;
-import model.PromozioneDAO;
-import model.UtenteDAO;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,18 +26,14 @@ public class UtenteServlet extends HttpServlet {
             return;
         }
 
-        FidelityCardDAO fidelityCardDAO = new FidelityCardDAO();
         OrdineDAO ordineDAO = new OrdineDAO();
-        PromozioneDAO promozioneDAO = new PromozioneDAO();
 
-        FidelityCard fidelityCard = fidelityCardDAO.getFidelityCardByUserId(utente.getId());
         List<Ordine> ordini = ordineDAO.getOrdiniByUserId(utente.getId());
-        List<Promozione> promozioni = promozioneDAO.getPromozioniByUserId(utente.getId());
+
 
         Map<String, Object> result = new HashMap<>();
-        result.put("fidelityCard", fidelityCard);
         result.put("ordini", ordini);
-        result.put("promozioni", promozioni);
+
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

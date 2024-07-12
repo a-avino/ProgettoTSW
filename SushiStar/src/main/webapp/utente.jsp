@@ -119,9 +119,7 @@
 
 <div class="main-container">
     <div class="sidebar">
-        <button onclick="showFidelityCard()">Fidelity Card</button>
         <button onclick="showOrders()">I Miei Ordini</button>
-        <button onclick="showPromotions()">Le Mie Promozioni</button>
         <button onclick="logoutConfirmation()">Logout</button>
     </div>
     <div class="content" id="main-content">
@@ -144,25 +142,6 @@
             .catch(error => console.error('Error fetching data:', error));
     }
 
-    function showFidelityCard() {
-        fetchData(data => {
-            const content = document.getElementById('main-content');
-            const fidelityCard = data.fidelityCard;
-            console.log('Fidelity Card:', fidelityCard); // Log di debug
-            if (fidelityCard) {
-                content.innerHTML = `
-                    <h3>Le Tue Fidelity Card</h3>
-                    <p>Numero Carta: `+ fidelityCard.numeroCarta+`</p>
-                    <p>Punti:`+fidelityCard.punti+`</p>
-                `;
-            } else {
-                content.innerHTML = `
-                    <h3>Le Tue Fidelity Card</h3>
-                    <p>Nessuna fidelity card trovata</p>
-                `;
-            }
-        });
-    }
 
     function showOrders() {
         fetchData(data => {
@@ -185,26 +164,7 @@
         });
     }
 
-    function showPromotions() {
-        fetchData(data => {
-            const content = document.getElementById('main-content');
-            const promozioni = data.promozioni;
-            console.log('Promozioni:', promozioni); // Log di debug
-            if (promozioni.length > 0) {
-                let promotionsHtml = '<h3>Le Tue Promozioni</h3><ul>';
-                promozioni.forEach(promozione => {
-                    promotionsHtml += `<li>Nome:`+ promozione.nome +`- Descrizione:`+ promozione.descrizione+` - Sconto: `+promozione.percentualeSconto+`</li>`;
-                });
-                promotionsHtml += '</ul>';
-                content.innerHTML = promotionsHtml;
-            } else {
-                content.innerHTML = `
-                    <h3>Le Tue Promozioni</h3>
-                    <p>Non hai promozioni.</p>
-                `;
-            }
-        });
-    }
+
 
 
     function logoutConfirmation() {

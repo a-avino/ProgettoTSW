@@ -4,11 +4,12 @@
 <%@ page import="beans.Tag" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <title>SushiStar-Catalogo</title>
     <link rel="stylesheet" href="css/sections/catalogo.css"/>
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/sushi.png" />
     <style>
         body {
             margin: 0;
@@ -176,6 +177,7 @@
         }
     </style>
     <script>
+        //AJAX per i filtri piu dom manipulation per andare a visualizzare la risposta senza riaggionrare la pagina
         function fetchFilteredProducts() {
             const formData = new FormData(document.getElementById('filter-form'));
             const params = new URLSearchParams();
@@ -211,7 +213,7 @@
                                     <div class="card-back">
                                         <h4><b> `+prodotto.nome +`</b></h4>
                                         <p>N.Pezzi =  `+prodotto.pezziPorzione +`</p>
-                                        <p>Prezzo: € `+prodotto.prezzo +`</p>
+                                        <p>Prezzo: € `+prodotto.prezzo.toFixed(2) +`</p>
                                         <form action="Carrello" method="post" style="display:inline;">
                                             <input type="hidden" name="productId" value=" `+prodotto.id +`">
                                             <input type="hidden" name="action" value="add">
@@ -304,22 +306,16 @@
                 <img src="assets/img/<%= prodotto.getNomeFoto() %>" alt="<%= prodotto.getNome() %> Image"
                      onerror="this.src='assets/img/noimg.jpg';">
                 <div class="container">
-                    <h4><b><%= prodotto.getNome() %>
-                    </b></h4>
-                    <p><b>Descrizione: </b> <%= prodotto.getDescrizione() %>
-                    </p>
-                    <p><b>Categoria: </b><%= prodotto.getCategoriaNome() %>
-                    </p>
+                    <h4><b><%= prodotto.getNome() %></b></h4>
+                    <p><b>Descrizione: </b> <%= prodotto.getDescrizione() %></p>
+                    <p><b>Categoria: </b><%= prodotto.getCategoriaNome() %></p>
                     <p><b>Tag: </b><%= tagsString.toString() %></p>
                 </div>
             </div>
             <div class="card-back">
-                <h4><b><%= prodotto.getNome() %>
-                </b></h4>
-                <p>N.Pezzi = <%= prodotto.getPezziPorzione() %>
-                </p>
-                <p>Prezzo: €<%= prodotto.getPrezzo() %>
-                </p>
+                <h4><b><%= prodotto.getNome() %></b></h4>
+                <p>N.Pezzi = <%= prodotto.getPezziPorzione() %></p>
+                <p>Prezzo: €<%= String.format("%.2f", prodotto.getPrezzo()) %></p>
                 <form action="Carrello" method="post" style="display:inline;">
                     <input type="hidden" name="productId" value="<%= prodotto.getId() %>">
                     <input type="hidden" name="action" value="add">
@@ -334,7 +330,6 @@
             }
         } else {
             System.out.println("Prodotti attribute is null");
-
         }
     %>
 </main>

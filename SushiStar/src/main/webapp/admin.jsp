@@ -15,6 +15,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/sushi.png" />
     <title>Admin Dashboard - SushiStar</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>
@@ -27,21 +28,11 @@
             flex-direction: column;
             min-height: 100vh;
         }
-        .header, .footer {
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+
         .header img {
             height: 50px;
         }
-        .nav-menu {
-            display: flex;
-            gap: 20px;
-        }
+
         .nav-menu a {
             text-decoration: none;
             color: #333;
@@ -85,20 +76,8 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             flex-grow: 1;
         }
-        .footer {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .footer .social {
-            display: flex;
-            gap: 10px;
-        }
-        .footer .social img {
-            height: 30px;
-        }
+
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -164,15 +143,32 @@
         .form-container button:hover {
             background-color: #ff6347;
         }
-        .delete-button {
-            background-color: #ff4500;
-            color: white;
-            border: none;
+        .edit-button, .delete-button {
             padding: 10px 20px;
             font-size: 14px;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
+            border: none;
+            color: #fff;
+        }
+
+        .edit-button {
+            background-color: #4CAF50; /* Verde */
+        }
+
+        .edit-button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        .edit-button:active {
+            background-color: #45a049;
+            transform: scale(1);
+        }
+
+        .delete-button {
+            background-color: #ff4500; /* Rosso */
         }
 
         .delete-button:hover {
@@ -184,6 +180,7 @@
             background-color: #ff6347;
             transform: scale(1);
         }
+
     </style>
 </head>
 <body>
@@ -194,10 +191,10 @@
     <div class="sidebar">
         <button onclick="fetchData('getUsers', showUsers)">Utenti Registrati</button>
         <button onclick="fetchData('getOrders', showOrders)">Ordini</button>
-        <button onclick="fetchData('getPromotions', showPromotions)">Promozioni</button>
-        <button onclick="showAddPromotionForm()">Aggiungi Promozione</button>
+        <button onclick="fetchData('getProducts', showProducts)">Prodotti</button>
         <button onclick="logoutConfirmation()">Logout</button>
     </div>
+
     <div class="content" id="main-content">
         <h2>Benvenuto, Admin!</h2>
         <p>Qui puoi gestire gli utenti, gli ordini e le promozioni.</p>
@@ -208,13 +205,14 @@
 <%@ include file="footer.jsp" %>
 
 <script>
+    //AJAX
     function fetchData(action, callback) {
         fetch(`AdminServlet?action=` + action)
             .then(response => response.json())
             .then(data => callback(data))
             .catch(error => console.error('Error fetching data:', error));
     }
-
+    // Manipolazione DOM
     function showUsers(data) {
         const utenti = data.utenti || [];
         const content = document.getElementById('main-content');
@@ -222,7 +220,6 @@
             let usersHtml = '<h3>Utenti Registrati</h3>';
             usersHtml += '<table><tr><th>Nome</th><th>Email</th></tr>';
             utenti.forEach(utente => {
-                console.log(utenti)
                 usersHtml += `<tr><td>` + utente.nome + ' ' + utente.cognome + `</td><td>` + utente.email + `</td></tr>`;
             });
             usersHtml += '</table>';
@@ -234,8 +231,7 @@
             `;
         }
     }
-
-    // modifica del dom con js
+    //Manipolaizone DOM
     function showOrders(data) {
         const ordini = data.ordini || [];
         const content = document.getElementById('main-content');
@@ -243,7 +239,6 @@
             let ordersHtml = '<h3>Ordini</h3>';
             ordersHtml += '<table><tr><th>Ordine ID</th><th>Data</th><th>Tipo</th></tr>';
             ordini.forEach(ordine => {
-
                 ordersHtml += `<tr><td>` + ordine.id + `</td><td>` + ordine.dataOrdine + `</td><td>` + ordine.tipoOrdine + `</td></tr>`;
             });
             ordersHtml += '</table>';
@@ -255,90 +250,73 @@
             `;
         }
     }
-
-    // modifica del dom js
-    function showPromotions(data) {
-        const promozioni = data.promozioni || [];
+    //Manipolaizone DOM
+    function showProducts(data) {
+        const prodotti = data.prodotti || [];
         const content = document.getElementById('main-content');
-        if (promozioni.length > 0) {
-            let promotionsHtml = '<h3>Promozioni</h3>';
-            promotionsHtml += '<table><tr><th>Nome</th><th>Descrizione</th><th>Sconto</th><th>Validità</th><th>Azione</th></tr>';
-            promozioni.forEach(promozione => {
-                console.log(promozioni)
-                promotionsHtml += `
+        if (prodotti.length > 0) {
+            let productsHtml = '<h3>Prodotti</h3>';
+            productsHtml += '<table><tr><th>Nome</th><th>Descrizione</th><th>Prezzo</th><th>Azioni</th></tr>';
+            prodotti.forEach(prodotto => {
+                productsHtml += `
                     <tr>
-                        <td>`+promozione.nome+`</td>
-                        <td>`+promozione.descrizione+`</td>
-                        <td>`+promozione.percentualeSconto+`%</td>
-                        <td>`+promozione.periodoValidita+`</td>
-                        <td><button class="delete-button" onclick="deletePromotion(`+promozione.id+`)">Elimina</button></td>
+                        <td>` + prodotto.nome + `</td>
+                        <td>` + prodotto.descrizione + `</td>
+                        <td>` + prodotto.prezzo + `</td>
+                        <td>
+                            <button  class="edit-button" onclick="editProduct(` + prodotto.id + `)">Modifica</button>
+                            <button class="delete-button" onclick="deleteProduct(` + prodotto.id + `)">Elimina</button>
+                        </td>
                     </tr>`;
             });
-            promotionsHtml += '</table>';
-            content.innerHTML = promotionsHtml;
+            productsHtml += '</table>';
+            content.innerHTML = productsHtml;
         } else {
             content.innerHTML = `
-                <h3>Promozioni</h3>
-                <p>Non ci sono promozioni.</p>
+                <h3>Prodotti</h3>
+                <p>Non ci sono prodotti.</p>
             `;
         }
     }
-
-    function deletePromotion(promotionId) {
-        if (confirm("Sei sicuro di voler eliminare questa promozione?")) {
-            fetch('AdminServlet?action=deletePromotion&id=' + promotionId, {
-                method: 'POST',
+    //Manipolazione DOM
+    function editProduct(productId) {
+        // Recupera i dettagli del prodotto e mostra il form di modifica
+        fetch(`AdminServlet?action=getProduct&id=` + productId)
+            .then(response => response.json())
+            .then(data => {
+                const prodotto = data.prodotto;
+                const content = document.getElementById('main-content');
+                content.innerHTML = `
+                <div class="form-container">
+                    <h3>Modifica Prodotto</h3>
+                    <form id="editProductForm" onsubmit="updateProduct(event, ` + productId + `)">
+                        <label for="nome">Nome:</label>
+                        <input type="text" id="nome" name="nome" value="` +prodotto.nome+` " required>
+                        <label for="descrizione">Descrizione:</label>
+                        <input type="text" id="descrizione" name="descrizione" value="` +prodotto.descrizione+`" required>
+                        <label for="prezzo">Prezzo:</label>
+                        <input type="number" step="0.01" id="prezzo" name="prezzo" value="` +prodotto.prezzo+`" required>
+                        <label for="categoriaID">Categoria ID:</label>
+                        <input type="number" id="categoriaID" name="categoriaID" value="` +prodotto.categoriaID+`" required>
+                        <label for="pezziPorzione">Pezzi per Porzione:</label>
+                        <input type="number" id="pezziPorzione" name="pezziPorzione" value="` +prodotto.pezziPorzione+`" required>
+                        <label for="nomeFoto">Nome Foto:</label>
+                        <input type="text" id="nomeFoto" name="nomeFoto" value="` +prodotto.nomeFoto+`" required>
+                        <button type="submit">Aggiorna Prodotto</button>
+                    </form>
+                </div>
+            `;
             })
-                .then(response => {
-                    return response.json().catch(() => {
-                        // Se la risposta non è un JSON valido, ritorna il testo della risposta.
-                        return response.text().then(text => {
-                            throw new Error(text);
-                        });
-                    });
-                })
-                .then(data => {
-                    if (data.success) {
-                        alert('Promozione eliminata con successo!');
-                        fetchData('getPromotions', showPromotions);
-                    } else {
-                        alert('Errore durante l\'eliminazione della promozione.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Errore durante l\'eliminazione della promozione: ' + error.message);
-                });
-        }
+            .catch(error => console.error('Error fetching product:', error));
     }
 
-
-    function showAddPromotionForm() {
-        const content = document.getElementById('main-content');
-        content.innerHTML = `
-            <div class="form-container">
-                <h3>Aggiungi Promozione</h3>
-                <form id="addPromotionForm" onsubmit="addPromotion(event)">
-                    <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="nome" required>
-                    <label for="descrizione">Descrizione:</label>
-                    <input type="text" id="descrizione" name="descrizione" required>
-                    <label for="percentualeSconto">Percentuale Sconto:</label>
-                    <input type="number" id="percentualeSconto" name="percentualeSconto" required>
-                    <label for="periodoValidita">Periodo Validità:</label>
-                    <input type="date" id="periodoValidita" name="periodoValidita" required>
-                    <button type="submit">Aggiungi Promozione</button>
-                </form>
-            </div>
-        `;
-    }
-
-    function addPromotion(event) {
+    //AJAX
+    function updateProduct(event, productId) {
         event.preventDefault();
-        const form = document.getElementById('addPromotionForm');
+        const form = document.getElementById('editProductForm');
         const formData = new FormData(form);
 
-        fetch('AddPromotionServlet', {
+        fetch('AdminServlet?action=updateProduct&id=' + productId, {
             method: 'POST',
             body: JSON.stringify(Object.fromEntries(formData)),
             headers: {
@@ -348,14 +326,33 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Promozione aggiunta con successo!');
-                    fetchData('getPromotions', showPromotions);
+                    alert('Prodotto aggiornato con successo!');
+                    fetchData('getProducts', showProducts);
                 } else {
-                    alert('Errore durante l\'aggiunta della promozione.');
+                    alert('Errore durante l\'aggiornamento del prodotto.');
                 }
             })
             .catch(error => console.error('Error:', error));
     }
+    //AJAX
+    function deleteProduct(productId) {
+        if (confirm("Sei sicuro di voler eliminare questo prodotto?")) {
+            fetch('AdminServlet?action=deleteProduct&id=' + productId, {
+                method: 'POST',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Prodotto eliminato con successo!');
+                        fetchData('getProducts', showProducts);
+                    } else {
+                        alert('Errore durante l\'eliminazione del prodotto: ' + data.error);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    }
+
 
     function logoutConfirmation() {
         if (confirm("Sei sicuro di voler effettuare il logout?")) {
@@ -363,6 +360,7 @@
         }
     }
 </script>
+
 
 </body>
 </html>

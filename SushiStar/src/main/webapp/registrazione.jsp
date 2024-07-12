@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/sushi.png" />
     <title>Registrazione - SushiStar</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>

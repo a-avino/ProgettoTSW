@@ -110,7 +110,38 @@ public class ProdottoCatalogoDAO {
         }
     }
 
+    // Aggiorna un prodotto nel catalogo
+    public boolean update(ProdottoCatalogo prodottoCatalogo) {
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(
+                    "UPDATE ProdottoCatalogo SET Nome = ?, Descrizione = ?, CategoriaID = ?, Prezzo = ?, PezziPorzione = ?, Foto = ? WHERE ID = ?");
+            ps.setString(1, prodottoCatalogo.getNome());
+            ps.setString(2, prodottoCatalogo.getDescrizione());
+            ps.setInt(3, prodottoCatalogo.getCategoriaID());
+            ps.setFloat(4, prodottoCatalogo.getPrezzo());
+            ps.setInt(5, prodottoCatalogo.getPezziPorzione());
+            ps.setString(6, prodottoCatalogo.getNomeFoto());
+            ps.setInt(7, prodottoCatalogo.getId());
 
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Elimina un prodotto dal catalogo
+    public boolean delete(int id) {
+        try (Connection con = ConPool.getConnection()) {
+            PreparedStatement ps = con.prepareStatement("DELETE FROM ProdottoCatalogo WHERE ID = ?");
+            ps.setInt(1, id);
+
+            int rowsDeleted = ps.executeUpdate();
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
     // Recupera tutti i prodotti presenti nel catalogo -> serve per la pagia catalogo
     public Collection<ProdottoCatalogo> doRetriveAll(String order) {
         try (Connection con = ConPool.getConnection()) {

@@ -112,29 +112,6 @@ public class UtenteDAO {
             ps.setString(5, "user"); // Imposta il ruolo di default a "user"
             int rowsAffected = ps.executeUpdate();
 
-            if (rowsAffected > 0) {
-                ResultSet generatedKeys = ps.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int userId = generatedKeys.getInt(1);
-
-                    // Crea una fidelity card per il nuovo utente
-                    PreparedStatement psFidelity = con.prepareStatement(
-                            "INSERT INTO FidelityCard (Punti) VALUES (0)", PreparedStatement.RETURN_GENERATED_KEYS);
-                    psFidelity.executeUpdate();
-                    ResultSet generatedFidelityKeys = psFidelity.getGeneratedKeys();
-                    if (generatedFidelityKeys.next()) {
-                        int fidelityCardId = generatedFidelityKeys.getInt(1);
-
-                        // Associa la fidelity card all'utente
-                        PreparedStatement psPossiede = con.prepareStatement(
-                                "INSERT INTO Possiede (UtenteID, FidelityCardID) VALUES (?, ?)");
-                        psPossiede.setInt(1, userId);
-                        psPossiede.setInt(2, fidelityCardId);
-                        psPossiede.executeUpdate();
-                    }
-                }
-            }
-
             return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();

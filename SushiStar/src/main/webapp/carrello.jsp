@@ -1,7 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="beans.ProdottoCarrello" %>
+<%  //per far in modo che quando l'utente vieni reinidirizzato qui dopo l'autenticazione non ha perso i dati inseriti
+    String tipoOrdineSession = (String) session.getAttribute("tipoOrdine");
+    String indirizzoConsegnaSession = (String) session.getAttribute("indirizzoConsegna");
+    String orarioRitiroSession = (String) session.getAttribute("orarioRitiro");
+%>
 <html>
 <head>
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/sushi.png" />
     <title>Carrello</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
@@ -89,7 +95,12 @@
         }
 
         .checkout {
+            display: flex;
+            justify-content: flex-end;
+            flex-basis: 100%;
             text-align: right;
+            margin-top: 10px;
+            order: 2;
         }
 
         #submitbtn {
@@ -119,7 +130,6 @@
             height: 20px;
         }
 
-        /* Styles for the order type section */
         .order-type-container {
             display: flex;
             align-items: center;
@@ -135,10 +145,7 @@
             align-items: center;
             margin-right: 20px;
             flex: 1;
-        }
-
-        .order-type-option label {
-            margin-right: 10px;
+            order: 1;
         }
 
         #deliveryFields, #takeawayFields {
@@ -154,7 +161,6 @@
             flex: 1;
         }
 
-        /* Responsive Styles */
         @media (max-width: 768px) {
             table, thead, tbody, th, td, tr {
                 display: block;
@@ -191,7 +197,6 @@
     </style>
 </head>
 <body>
-<!-- Header -->
 <%@ include file="header.jsp" %>
 <div id="w">
     <header id="title">
@@ -211,7 +216,6 @@
             </tr>
             </thead>
             <tbody>
-            <!-- shopping cart contents -->
             <%
                 if (carrello == null || carrello.isEmpty()) {
             %>
@@ -228,7 +232,7 @@
                     <%= prod.getQuantità() %>
                 </td>
                 <td data-label="Prodotto"><%= prod.getProdotto().getNome() %></td>
-                <td data-label="Totale">€ <%= prod.getPrezzoTotale() %></td>
+                <td data-label="Totale">€ <%= String.format("%.2f", prod.getPrezzoTotale()) %></td>
                 <td data-label="Rimuovi">
                     <form action="Carrello" method="post">
                         <input type="hidden" name="productId" value="<%= prod.getProdotto().getId() %>">
@@ -248,7 +252,7 @@
             <tr class="totalprice">
                 <td class="light" data-label="Totale">Totale:</td>
                 <td colspan="2">&nbsp;</td>
-                <td colspan="2"><span class="thick">€ <%= carrello.getPrezzoTotaleProdotti() + 35 %></span></td>
+                <td colspan="2"><span class="thick">€ <%= String.format("%.2f", carrello.getPrezzoTotaleProdotti() + 35) %></span></td>
             </tr>
             <%
                 }
@@ -256,28 +260,27 @@
             </tbody>
         </table>
 
-        <!-- Order type selection -->
         <div class="order-type-container">
             <form action="OrdineServlet" method="post">
-                <div class="order-type-option">
+                <div class="order-type-option" style="margin-bottom: 10px">
                     <label>Tipo di ordine:</label>
-                    <input type="radio" id="delivery" name="tipoOrdine" value="Delivery" onclick="toggleOrderFields('delivery')" required>
+                    <input type="radio" id="delivery" name="tipoOrdine" value="Delivery" onclick="toggleOrderFields('delivery')" required <%= "Delivery".equals(tipoOrdineSession) ? "checked" : "" %>>
                     <label for="delivery">Delivery</label>
-                    <input type="radio" id="takeaway" name="tipoOrdine" value="Takeaway" onclick="toggleOrderFields('takeaway')" required>
+                    <input type="radio" id="takeaway" name="tipoOrdine" value="Takeaway" onclick="toggleOrderFields('takeaway')" required <%= "Takeaway".equals(tipoOrdineSession) ? "checked" : "" %>>
                     <label for="takeaway">Takeaway</label>
                 </div>
 
-                <div id="deliveryFields" class="order-type-option" style="display:none;">
+                <div id="deliveryFields" class="order-type-option" style="display: <%= "Delivery".equals(tipoOrdineSession) ? "flex" : "none" %>;">
                     <label for="indirizzoConsegna">Indirizzo di consegna:</label>
-                    <input type="text" id="indirizzoConsegna" name="indirizzoConsegna">
+                    <input type="text" id="indirizzoConsegna" name="indirizzoConsegna" value="<%= indirizzoConsegnaSession != null ? indirizzoConsegnaSession : "" %>">
                 </div>
 
-                <div id="takeawayFields" class="order-type-option" style="display:none;">
+                <div id="takeawayFields" class="order-type-option" style="display: <%= "Takeaway".equals(tipoOrdineSession) ? "flex" : "none" %>;">
                     <label for="orarioRitiro">Orario di ritiro:</label>
-                    <input type="time" id="orarioRitiro" name="orarioRitiro">
+                    <input type="time" id="orarioRitiro" name="orarioRitiro" value="<%= orarioRitiroSession != null ? orarioRitiroSession : "" %>">
                 </div>
 
-                <div class="checkout" style="flex-basis: 100%; text-align: right;">
+                <div class="checkout">
                     <button type="submit" id="submitbtn">Procedi al Checkout</button>
                 </div>
             </form>
@@ -285,10 +288,11 @@
     </div>
 </div>
 
-<!-- Footer -->
 <%@ include file="footer.jsp" %>
 
+
 <script>
+    //DOM Manimulation
     function toggleOrderFields(type) {
         document.getElementById('deliveryFields').style.display = type === 'delivery' ? 'flex' : 'none';
         document.getElementById('takeawayFields').style.display = type === 'takeaway' ? 'flex' : 'none';

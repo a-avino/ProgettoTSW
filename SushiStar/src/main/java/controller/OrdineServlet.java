@@ -85,7 +85,8 @@ public class OrdineServlet extends HttpServlet {
             // Aggiorna i punti fedeltà dell'utente
             utenteDAO.aggiornaPuntiFedelta(utente.getId(), 100);
 
-
+            // Rimuovi il carrello dalla sessione
+            session.removeAttribute("carrello");
             response.sendRedirect("ordineSuccesso.jsp");
 
         } catch (Exception e) {

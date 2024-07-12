@@ -3,6 +3,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/img/sushi.png" />
     <title>Ordine Completato - SushiStar</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
